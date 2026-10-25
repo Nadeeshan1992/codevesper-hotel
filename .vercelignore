@@ -1,0 +1,9 @@
+.git
+.gitignore
+.vercel
+*.log
+scratch/
+test_*.php
+tmp/
+.vscode/
+.idea/

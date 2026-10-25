@@ -1,0 +1,499 @@
+/* ========================================================
+   CodeVesper - Waiter Touch Tablet POS Stylesheet
+   Zero Horizontal Scroll, Pinned Order Panel & Touch Optimization
+   ======================================================== */
+
+/* Prevent ANY horizontal page scrolling on POS */
+html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+}
+
+.pos-page-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.pos-container {
+    height: calc(100vh - var(--topbar-height) - 48px);
+    min-height: 520px;
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Left Column: Menu Catalog */
+.pos-catalog-panel {
+    flex: 1 1 0%;
+    min-width: 0 !important;
+    width: 0 !important;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Category Filter Bar */
+.pos-categories-bar {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border-color);
+    background: #f8fafc;
+    -webkit-overflow-scrolling: touch;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+}
+
+.pos-categories-bar::-webkit-scrollbar {
+    height: 4px;
+}
+.pos-categories-bar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.category-pill {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border-color);
+    background: #fff;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.category-pill:hover,
+.category-pill.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 3px 8px rgba(30, 58, 138, 0.2);
+}
+
+/* Search Bar */
+.pos-search-box {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Responsive Menu Cards Grid */
+.pos-menu-grid {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    align-content: start;
+}
+
+.menu-card-touch {
+    background: #fff;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    position: relative;
+}
+
+.menu-card-touch:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.menu-card-touch:active {
+    transform: scale(0.96);
+    border-color: var(--primary);
+}
+
+.menu-card-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 110px;
+    overflow: hidden;
+    background: #e2e8f0;
+}
+
+.menu-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+.menu-card-touch:hover .menu-card-img {
+    transform: scale(1.06);
+}
+
+.menu-card-cat-tag {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    background: rgba(15, 23, 42, 0.82);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.menu-card-prep-tag {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(4px);
+    color: #0f172a;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+}
+
+.menu-card-body {
+    padding: 8px 10px 4px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-card-name {
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--text-main);
+    margin-bottom: 3px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.menu-card-desc {
+    font-size: 0.70rem;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+}
+
+.menu-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px 8px;
+    margin-top: auto;
+    border-top: 1px dashed var(--border-color);
+}
+
+.menu-card-price {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--gold);
+}
+
+.menu-card-add-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
+    background: #eff6ff;
+    color: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    border: none;
+    transition: all 0.15s ease;
+}
+
+.menu-card-touch:hover .menu-card-add-btn {
+    background: var(--primary-light);
+    color: #fff;
+    transform: scale(1.08);
+}
+
+/* Right Side: Active Order Panel (Always Pinned on Right) */
+.pos-order-panel {
+    flex: 0 0 340px;
+    width: 340px;
+    min-width: 300px;
+    max-width: 360px;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    height: 100%;
+}
+
+.pos-order-header {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border-color);
+    background: #f8fafc;
+    flex-shrink: 0;
+}
+
+.order-type-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.order-type-btn {
+    flex: 1;
+    padding: 7px 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1.5px solid var(--border-color);
+    background: #fff;
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s ease;
+}
+
+.order-type-btn.active {
+    border-color: var(--primary);
+    background: #eff6ff;
+    color: var(--primary);
+}
+
+/* Quick Table Pills for Rapid 1-Tap Table Selection */
+.quick-table-scroll {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+    padding: 4px 0 2px;
+    margin-bottom: 6px;
+    white-space: nowrap;
+}
+
+.quick-table-scroll::-webkit-scrollbar {
+    height: 3px;
+}
+
+.quick-table-pill {
+    padding: 4px 9px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    font-size: 0.74rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.quick-table-pill.active {
+    background: #1e3a8a;
+    color: #fff;
+    border-color: #1e3a8a;
+}
+
+.quick-table-pill.occupied {
+    background: #fef3c7;
+    border-color: #f59e0b;
+    color: #92400e;
+}
+
+/* Cart Items List */
+.pos-cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cart-item-row {
+    padding: 8px 10px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cart-item-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cart-item-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.cart-item-price {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: var(--gold);
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.qty-control-touch {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.qty-touch-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.95rem;
+    user-select: none;
+}
+
+.qty-touch-btn:active {
+    background: #e2e8f0;
+}
+
+.qty-display {
+    width: 26px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.88rem;
+}
+
+/* Order Totals & Action Buttons */
+.pos-order-footer {
+    padding: 12px 14px;
+    border-top: 1px solid var(--border-color);
+    background: #f8fafc;
+    flex-shrink: 0;
+}
+
+.total-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    margin-bottom: 3px;
+    color: var(--text-muted);
+}
+
+.total-line.final {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px dashed var(--border-color);
+}
+
+/* Big Action Buttons for Waiter Touch PC */
+.pos-action-btn {
+    height: 44px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.pos-action-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-kot {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.25);
+}
+
+.btn-room-charge {
+    background: linear-gradient(135deg, #0284c7, #0369a1);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
+}
+
+.btn-settle {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+}
+
+/* Responsive: Support screen down to 768px in landscape or portrait */
+@media (max-width: 768px) {
+    .pos-container {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+    }
+    .pos-catalog-panel {
+        flex: none;
+        width: 100% !important;
+        height: 52vh;
+    }
+    .pos-order-panel {
+        flex: none;
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        min-height: 440px;
+    }
+}
