@@ -14,12 +14,17 @@ function getDbConnection(): PDO {
             PDO::ATTR_EMULATE_PREPARES   => false,
         ];
 
-        // Enable SSL when connecting to remote cloud databases (Aiven, TiDB, PlanetScale, Railway)
+        // Enable SSL when connecting to remote cloud databases (TiDB, Aiven, PlanetScale, Railway)
+        $bundledCa = __DIR__ . '/../config/ca-bundle.crt';
         if (defined('DB_SSL_CA') && !empty(DB_SSL_CA) && file_exists(DB_SSL_CA)) {
             $options[PDO::MYSQL_ATTR_SSL_CA] = DB_SSL_CA;
+        } elseif (file_exists($bundledCa)) {
+            $options[PDO::MYSQL_ATTR_SSL_CA] = $bundledCa;
         } elseif (DB_HOST !== 'localhost' && DB_HOST !== '127.0.0.1') {
-            if (defined('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT')) {
-                $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+            if (file_exists('/etc/pki/tls/certs/ca-bundle.crt')) {
+                $options[PDO::MYSQL_ATTR_SSL_CA] = '/etc/pki/tls/certs/ca-bundle.crt';
+            } elseif (file_exists('/etc/ssl/certs/ca-certificates.crt')) {
+                $options[PDO::MYSQL_ATTR_SSL_CA] = '/etc/ssl/certs/ca-certificates.crt';
             }
         }
 
