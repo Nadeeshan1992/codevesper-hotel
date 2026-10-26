@@ -93,12 +93,12 @@ function currentUser(): ?array {
         return null;
     }
     return [
-        'id'        => $_SESSION['user_id'],
-        'username'  => $_SESSION['username'],
-        'full_name' => $_SESSION['full_name'],
-        'role_id'   => $_SESSION['role_id'],
-        'role_slug' => $_SESSION['role_slug'],
-        'role_name' => $_SESSION['role_name'],
+        'id'        => $_SESSION['user_id'] ?? 0,
+        'username'  => $_SESSION['username'] ?? '',
+        'full_name' => $_SESSION['full_name'] ?? 'Staff',
+        'role_id'   => $_SESSION['role_id'] ?? 1,
+        'role_slug' => $_SESSION['role_slug'] ?? 'admin',
+        'role_name' => $_SESSION['role_name'] ?? 'Staff',
         'email'     => $_SESSION['email'] ?? '',
         'avatar'    => $_SESSION['avatar'] ?? 'default_avatar.png'
     ];

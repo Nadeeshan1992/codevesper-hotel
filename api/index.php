@@ -7,6 +7,10 @@
  * maintaining session state, relative paths, and clean URLs.
  */
 
+// Suppress deprecations and warnings from breaking layouts or headers
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE);
+ini_set('display_errors', '0');
+
 // Start output buffering to prevent headers already sent issues
 if (!ob_get_level()) {
     ob_start();

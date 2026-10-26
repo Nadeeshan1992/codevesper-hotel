@@ -4,6 +4,10 @@
  * Hotel & Restaurant Management System
  */
 
+// Suppress deprecation and minor notices from breaking HTML layouts / sending headers prematurely
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED & ~E_NOTICE);
+ini_set('display_errors', '0');
+
 // Helper to get environment variable with fallback
 if (!function_exists('getEnvVar')) {
     function getEnvVar(string $key, string $default = ''): string {

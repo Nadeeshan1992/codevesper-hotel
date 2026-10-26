@@ -16,15 +16,17 @@ function getDbConnection(): PDO {
 
         // Enable SSL when connecting to remote cloud databases (TiDB, Aiven, PlanetScale, Railway)
         $bundledCa = __DIR__ . '/../config/ca-bundle.crt';
+        $sslCaKey = defined('\Pdo\Mysql::ATTR_SSL_CA') ? \Pdo\Mysql::ATTR_SSL_CA : (defined('PDO::MYSQL_ATTR_SSL_CA') ? @constant('PDO::MYSQL_ATTR_SSL_CA') : 1002);
+        
         if (defined('DB_SSL_CA') && !empty(DB_SSL_CA) && file_exists(DB_SSL_CA)) {
-            $options[PDO::MYSQL_ATTR_SSL_CA] = DB_SSL_CA;
+            $options[$sslCaKey] = DB_SSL_CA;
         } elseif (file_exists($bundledCa)) {
-            $options[PDO::MYSQL_ATTR_SSL_CA] = $bundledCa;
+            $options[$sslCaKey] = $bundledCa;
         } elseif (DB_HOST !== 'localhost' && DB_HOST !== '127.0.0.1') {
             if (file_exists('/etc/pki/tls/certs/ca-bundle.crt')) {
-                $options[PDO::MYSQL_ATTR_SSL_CA] = '/etc/pki/tls/certs/ca-bundle.crt';
+                $options[$sslCaKey] = '/etc/pki/tls/certs/ca-bundle.crt';
             } elseif (file_exists('/etc/ssl/certs/ca-certificates.crt')) {
-                $options[PDO::MYSQL_ATTR_SSL_CA] = '/etc/ssl/certs/ca-certificates.crt';
+                $options[$sslCaKey] = '/etc/ssl/certs/ca-certificates.crt';
             }
         }
 
