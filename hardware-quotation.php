@@ -527,72 +527,6 @@ require_once __DIR__ . '/config/database.php';
             </tbody>
         </table>
 
-        <div class="page-break"></div>
-
-        <!-- Recommended Turnkey Hardware Packages -->
-        <h4 class="section-title">
-            <i class="fa-solid fa-layer-group text-primary"></i> Recommended Turnkey Bundles
-        </h4>
-        <p class="section-intro">
-            For maximum cost-efficiency and unified warranty management, we recommend either of the following pre-configured bundles for Ella Hide View Hotel:
-        </p>
-
-        <div class="row g-3 mb-4">
-            <!-- Package A: Economy Value Bundle -->
-            <div class="col-md-6">
-                <div class="bundle-box h-100 d-flex flex-column justify-content-between">
-                    <div>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge bg-secondary text-uppercase tracking-wider small">Option 1</span>
-                            <span class="text-success small fw-bold"><i class="fa-solid fa-tag me-1"></i>Most Cost-Effective</span>
-                        </div>
-                        <h5 class="fw-bold text-dark mb-1">Smart Budget Front Desk Bundle</h5>
-                        <p class="small text-muted mb-3">Complete front office setup combining reliable refurbished processing with brand new POS peripherals.</p>
-                        
-                        <ul class="spec-list">
-                            <li><strong>Core i5 Full Computer Set:</strong> 8GB RAM, 128GB New SSD, 22" LED Monitor, Keyboard & Mouse.</li>
-                            <li><strong>80mm Thermal POS Printer:</strong> USB & Ethernet (LAN) with auto-cutter.</li>
-                            <li><strong>Heavy-Duty Steel Cash Drawer:</strong> Auto-kick RJ11 interface.</li>
-                            <li><strong>Setup & Testing:</strong> On-site driver installation, receipt calibration, and local hotel network setup.</li>
-                        </ul>
-                    </div>
-
-                    <div class="pt-3 border-top mt-3">
-                        <div class="text-muted small">Total Package Price:</div>
-                        <div class="product-price text-primary">LKR 99,500.00</div>
-                        <div class="small text-muted mt-1"><i class="fa-solid fa-check text-success me-1"></i> Plug & Play Ready &bull; Includes Cables & Paper Rolls</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Package B: Enterprise Brand New Bundle -->
-            <div class="col-md-6">
-                <div class="bundle-box featured h-100 d-flex flex-column justify-content-between">
-                    <div>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge bg-primary text-uppercase tracking-wider small">Option 2</span>
-                            <span class="text-primary small fw-bold"><i class="fa-solid fa-crown text-warning me-1"></i>Premium Enterprise</span>
-                        </div>
-                        <h5 class="fw-bold text-dark mb-1">Executive Brand New DELL Bundle</h5>
-                        <p class="small text-muted mb-3">Enterprise-grade durability with 14th Gen processing power, wireless POS printing, and 3-year warranty.</p>
-                        
-                        <ul class="spec-list">
-                            <li><strong>DELL Tower QVT1260 Brand New:</strong> i3 14th Gen, 8GB RAM, 512GB NVMe SSD, 22" FHD Monitor (<strong>3 Years Warranty</strong>).</li>
-                            <li><strong>Quad-Interface 80mm POS Printer:</strong> Bluetooth + Wi-Fi + LAN + USB for wireless mobile printing.</li>
-                            <li><strong>Heavy-Duty Steel Cash Drawer:</strong> 5-Bill, 8-Coin with printer auto-trigger.</li>
-                            <li><strong>Setup & Testing:</strong> Comprehensive configuration with remote cloud sync and local backup scripts.</li>
-                        </ul>
-                    </div>
-
-                    <div class="pt-3 border-top mt-3">
-                        <div class="text-muted small">Total Package Price:</div>
-                        <div class="product-price text-success">LKR 369,500.00</div>
-                        <div class="small text-muted mt-1"><i class="fa-solid fa-shield-halved text-success me-1"></i> 3-Year Company Direct Warranty &bull; Free Delivery</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Commercial Terms & Conditions -->
         <h4 class="section-title">
             <i class="fa-solid fa-shield text-primary"></i> Hardware Terms, Delivery & Warranty
@@ -637,7 +571,7 @@ require_once __DIR__ . '/config/database.php';
                         <div>
                             <div class="sign-line"></div>
                             <div class="fw-bold small">Client Signature & Hotel Stamp</div>
-                            <div class="small text-muted">Selected Option: [ &nbsp; ] Option 1 &nbsp; [ &nbsp; ] Option 2</div>
+                            <div class="small text-muted">Date: ________________________</div>
                         </div>
                     </div>
                 </div>
