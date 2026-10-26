@@ -617,7 +617,7 @@ require_once __DIR__ . '/config/database.php';
                         <div class="item-desc">Complete Hotel Management ERP, Front Desk Engine, Waiter Tablet POS, Kitchen KOT, Unified Billing & Thermal Receipt Printing engine customized for Ella Hide View Hotel.</div>
                     </td>
                     <td>One-Time</td>
-                    <td class="item-price">80,000.00</td>
+                    <td class="item-price">100,000.00</td>
                 </tr>
                 <tr>
                     <td><strong>02</strong></td>
@@ -653,7 +653,7 @@ require_once __DIR__ . '/config/database.php';
         <div class="total-summary-card">
             <div class="total-row">
                 <span>Core Development & Software Customization:</span>
-                <span class="fw-bold">LKR 80,000.00</span>
+                <span class="fw-bold">LKR 100,000.00</span>
             </div>
             <div class="total-row">
                 <span>Cloud Infrastructure, Domain, Server & SMS Setup:</span>
@@ -661,7 +661,7 @@ require_once __DIR__ . '/config/database.php';
             </div>
             <div class="grand-total-row">
                 <span>TOTAL INITIAL INVESTMENT (ONE-TIME):</span>
-                <span class="text-primary" style="color: #0284c7 !important;">LKR 155,000.00</span>
+                <span class="text-primary" style="color: #0284c7 !important;">LKR 175,000.00</span>
             </div>
         </div>
 
@@ -771,21 +771,21 @@ require_once __DIR__ . '/config/database.php';
                 <div class="p-3 border rounded-3 bg-light">
                     <span class="badge bg-primary mb-2">Milestone 1 (50%)</span>
                     <h6 class="fw-bold mb-1">Project Initiation</h6>
-                    <p class="small text-muted mb-0">LKR 77,500 advance upon agreement signing. Cloud server, database, and system customization initiated.</p>
+                    <p class="small text-muted mb-0">LKR 87,500 advance upon agreement signing. Cloud server, database, and system customization initiated.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="p-3 border rounded-3 bg-light">
                     <span class="badge bg-info mb-2">Milestone 2 (30%)</span>
                     <h6 class="fw-bold mb-1">Testing & Training</h6>
-                    <p class="small text-muted mb-0">LKR 46,500 upon deployment of rooms, menu items, staff accounts, and staff training at Ella Hide View Hotel.</p>
+                    <p class="small text-muted mb-0">LKR 52,500 upon deployment of rooms, menu items, staff accounts, and staff training at Ella Hide View Hotel.</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="p-3 border rounded-3 bg-light">
                     <span class="badge bg-success mb-2">Milestone 3 (20%)</span>
                     <h6 class="fw-bold mb-1">Go-Live & Handover</h6>
-                    <p class="small text-muted mb-0">LKR 31,000 upon official launch, handover of administrator master credentials, and final sign-off.</p>
+                    <p class="small text-muted mb-0">LKR 35,000 upon official launch, handover of administrator master credentials, and final sign-off.</p>
                 </div>
             </div>
         </div>
