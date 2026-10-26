@@ -5,18 +5,20 @@
  */
 
 // Helper to get environment variable with fallback
-function getEnvVar(string $key, string $default = ''): string {
-    $val = getenv($key);
-    if ($val !== false && $val !== '') {
-        return $val;
+if (!function_exists('getEnvVar')) {
+    function getEnvVar(string $key, string $default = ''): string {
+        $val = getenv($key);
+        if ($val !== false && $val !== '') {
+            return $val;
+        }
+        if (isset($_ENV[$key]) && $_ENV[$key] !== '') {
+            return $_ENV[$key];
+        }
+        if (isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
+            return $_SERVER[$key];
+        }
+        return $default;
     }
-    if (isset($_ENV[$key]) && $_ENV[$key] !== '') {
-        return $_ENV[$key];
-    }
-    if (isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
-        return $_SERVER[$key];
-    }
-    return $default;
 }
 
 // Support all-in-one DATABASE_URL / MYSQL_URL (e.g. Railway, PlanetScale, TiDB, Aiven)
@@ -29,17 +31,17 @@ $defaultPass = $parsedDbUrl['pass'] ?? '';
 $defaultName = isset($parsedDbUrl['path']) ? ltrim($parsedDbUrl['path'], '/') : 'hotel_db';
 $defaultPort = isset($parsedDbUrl['port']) ? (string)$parsedDbUrl['port'] : '3306';
 
-define('DB_HOST', getEnvVar('DB_HOST', $defaultHost));
-define('DB_USER', getEnvVar('DB_USER', $defaultUser));
-define('DB_PASS', getEnvVar('DB_PASS', $defaultPass));
-define('DB_NAME', getEnvVar('DB_NAME', $defaultName));
-define('DB_PORT', getEnvVar('DB_PORT', $defaultPort));
-define('DB_CHARSET', getEnvVar('DB_CHARSET', 'utf8mb4'));
-define('DB_SSL_CA', getEnvVar('DB_SSL_CA', ''));
+if (!defined('DB_HOST')) define('DB_HOST', getEnvVar('DB_HOST', $defaultHost));
+if (!defined('DB_USER')) define('DB_USER', getEnvVar('DB_USER', $defaultUser));
+if (!defined('DB_PASS')) define('DB_PASS', getEnvVar('DB_PASS', $defaultPass));
+if (!defined('DB_NAME')) define('DB_NAME', getEnvVar('DB_NAME', $defaultName));
+if (!defined('DB_PORT')) define('DB_PORT', getEnvVar('DB_PORT', $defaultPort));
+if (!defined('DB_CHARSET')) define('DB_CHARSET', getEnvVar('DB_CHARSET', 'utf8mb4'));
+if (!defined('DB_SSL_CA')) define('DB_SSL_CA', getEnvVar('DB_SSL_CA', ''));
 
-define('APP_KEY', getEnvVar('APP_KEY', 'codevesper_hotel_resort_suite_secret_2026'));
-define('APP_NAME', 'CodeVesper');
-define('APP_TAGLINE', 'Hotel & Restaurant Management Suite');
-define('APP_LOGO', 'assets/images/logo.jpg');
-define('APP_URL', getEnvVar('APP_URL', 'http://localhost:8080/Hotel'));
-define('CURRENCY_SYMBOL', 'LKR ');
+if (!defined('APP_KEY')) define('APP_KEY', getEnvVar('APP_KEY', 'codevesper_hotel_resort_suite_secret_2026'));
+if (!defined('APP_NAME')) define('APP_NAME', 'CodeVesper');
+if (!defined('APP_TAGLINE')) define('APP_TAGLINE', 'Hotel & Restaurant Management Suite');
+if (!defined('APP_LOGO')) define('APP_LOGO', 'assets/images/logo.jpg');
+if (!defined('APP_URL')) define('APP_URL', getEnvVar('APP_URL', 'http://localhost:8080/Hotel'));
+if (!defined('CURRENCY_SYMBOL')) define('CURRENCY_SYMBOL', 'LKR ');

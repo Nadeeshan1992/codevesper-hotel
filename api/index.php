@@ -7,6 +7,11 @@
  * maintaining session state, relative paths, and clean URLs.
  */
 
+// Start output buffering to prevent headers already sent issues
+if (!ob_get_level()) {
+    ob_start();
+}
+
 // Establish project root as current working directory
 $rootDir = dirname(__DIR__);
 chdir($rootDir);
