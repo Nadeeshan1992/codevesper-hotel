@@ -344,7 +344,7 @@ CREATE TABLE `payments` (
   `invoice_id` int DEFAULT NULL,
   `order_id` int DEFAULT NULL,
   `amount` decimal(10,2) NOT NULL,
-  `payment_method` enum('Cash','Credit Card','Debit Card','UPI / QR','Bank Transfer') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payment_method` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `transaction_ref` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `notes` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `recorded_by` int DEFAULT NULL,

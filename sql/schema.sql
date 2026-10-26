@@ -508,7 +508,7 @@ CREATE TABLE `payments` (
     `invoice_id` INT NULL,
     `order_id` INT NULL,
     `amount` DECIMAL(10,2) NOT NULL,
-    `payment_method` ENUM('Cash', 'Credit Card', 'Debit Card', 'UPI / QR', 'Bank Transfer') NOT NULL,
+    `payment_method` VARCHAR(50) NOT NULL,
     `transaction_ref` VARCHAR(100) NULL,
     `notes` VARCHAR(255) NULL,
     `recorded_by` INT NULL,
