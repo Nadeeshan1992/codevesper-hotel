@@ -252,8 +252,8 @@ foreach ($stockItems as $item) {
                         <input type="number" id="modalMovementQty" class="form-control" step="0.1" min="0.1" required>
                     </div>
                     <div class="col-6">
-                        <label class="form-label small fw-bold">Unit Purchase Price (<?= CURRENCY_SYMBOL ?>)</label>
-                        <input type="number" id="modalMovementPrice" class="form-control" step="0.01" value="0.00">
+                        <label class="form-label small fw-bold">Unit Purchase Price (<?= APP_CURRENCY ?>)</label>
+                        <input type="number" id="modalMovementPrice" class="form-control" step="1" value="0.00">
                     </div>
                 </div>
                 <div class="mb-3">
@@ -306,8 +306,8 @@ foreach ($stockItems as $item) {
                 </div>
                 <div class="row g-2 mb-3">
                     <div class="col-6">
-                        <label class="form-label small fw-bold">Unit Cost (<?= CURRENCY_SYMBOL ?>)</label>
-                        <input type="number" id="newItemCost" class="form-control" value="0.00" step="0.01">
+                        <label class="form-label small fw-bold">Unit Cost (<?= APP_CURRENCY ?>)</label>
+                        <input type="number" id="newItemCost" class="form-control" value="0.00" step="1">
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-bold">Supplier</label>

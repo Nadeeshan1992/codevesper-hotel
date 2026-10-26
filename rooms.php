@@ -274,8 +274,8 @@ foreach ($rooms as $r) {
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label small fw-bold">Daily Rate (<?= CURRENCY_SYMBOL ?> / Night) *</label>
-                    <input type="number" id="newRoomRate" class="form-control" value="120.00" step="5" required>
+                    <label class="form-label small fw-bold">Daily Rate (<?= APP_CURRENCY ?> / Night) *</label>
+                    <input type="number" id="newRoomRate" class="form-control" value="18000.00" step="500" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label small fw-bold">Amenities / Room Notes</label>
@@ -321,8 +321,8 @@ foreach ($rooms as $r) {
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label small fw-bold">Daily Rate (<?= CURRENCY_SYMBOL ?> / Night) *</label>
-                    <input type="number" id="editRoomRate" class="form-control" step="5" required>
+                    <label class="form-label small fw-bold">Daily Rate (<?= APP_CURRENCY ?> / Night) *</label>
+                    <input type="number" id="editRoomRate" class="form-control" step="500" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label small fw-bold">Amenities / Notes</label>
@@ -436,8 +436,8 @@ foreach ($rooms as $r) {
                         <input type="number" id="checkinStayDays" class="form-control" value="1" min="1" max="365">
                     </div>
                     <div class="col-6">
-                        <label class="form-label small fw-bold">Advance Deposit (<?= CURRENCY_SYMBOL ?>)</label>
-                        <input type="number" id="checkinDeposit" class="form-control" value="0.00" step="10">
+                        <label class="form-label small fw-bold">Advance Deposit (<?= APP_CURRENCY ?>)</label>
+                        <input type="number" id="checkinDeposit" class="form-control" value="0.00" step="100">
                     </div>
                 </div>
             </div>
@@ -603,7 +603,7 @@ function submitCreateRoomType() {
 
 function openCheckinModal(roomId, roomNumber, rate) {
     document.getElementById('checkinRoomId').value = roomId;
-    document.getElementById('modalRoomTitle').innerText = roomNumber + ' (' + '<?= CURRENCY_SYMBOL ?>' + rate + '/night)';
+    document.getElementById('modalRoomTitle').innerText = roomNumber + ' (' + '<?= APP_CURRENCY ?>' + rate + '/night)';
     new bootstrap.Modal(document.getElementById('checkinModal')).show();
 }
 

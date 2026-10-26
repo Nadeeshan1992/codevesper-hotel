@@ -215,15 +215,15 @@ body, .app-wrapper, .app-main {
             <div class="pos-order-footer">
                 <div class="total-line">
                     <span>Subtotal:</span>
-                    <span id="txtSubtotal"><?= CURRENCY_SYMBOL ?>0.00</span>
+                    <span id="txtSubtotal"><?= APP_CURRENCY ?>0.00</span>
                 </div>
                 <div class="total-line">
                     <span>Taxes & Service (10%):</span>
-                    <span id="txtTax"><?= CURRENCY_SYMBOL ?>0.00</span>
+                    <span id="txtTax"><?= APP_CURRENCY ?>0.00</span>
                 </div>
                 <div class="total-line final">
                     <span>Total Amount:</span>
-                    <span id="txtTotal" class="text-primary"><?= CURRENCY_SYMBOL ?>0.00</span>
+                    <span id="txtTotal" class="text-primary"><?= APP_CURRENCY ?>0.00</span>
                 </div>
 
                 <div class="d-flex flex-column gap-2 mt-2">
@@ -261,7 +261,7 @@ body, .app-wrapper, .app-main {
             <div class="modal-body">
                 <div class="text-center mb-4">
                     <span class="text-muted small">Total Due:</span>
-                    <h2 class="fw-bold text-success" id="modalPaymentTotal"><?= CURRENCY_SYMBOL ?>0.00</h2>
+                    <h2 class="fw-bold text-success" id="modalPaymentTotal"><?= APP_CURRENCY ?>0.00</h2>
                 </div>
 
                 <div class="mb-3">
@@ -311,7 +311,7 @@ body, .app-wrapper, .app-main {
 
 <script>
 // Waiter POS Cart State
-const CURRENCY_SYM = '<?= CURRENCY_SYMBOL ?>';
+const CURRENCY_SYM = '<?= APP_CURRENCY ?>';
 let cart = [];
 let currentOrderType = 'dine_in';
 

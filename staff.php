@@ -256,8 +256,8 @@ foreach ($staffMembers as $sm) {
                             <input type="text" name="phone" class="form-control" required>
                         </div>
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Monthly Salary (<?= CURRENCY_SYMBOL ?>)</label>
-                            <input type="number" name="salary" class="form-control" value="1500" step="50">
+                            <label class="form-label small fw-bold">Monthly Salary (<?= APP_CURRENCY ?>)</label>
+                            <input type="number" name="salary" class="form-control" value="65000" step="1000">
                         </div>
                     </div>
                 </div>

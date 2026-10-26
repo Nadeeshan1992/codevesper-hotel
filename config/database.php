@@ -48,4 +48,4 @@ if (!defined('APP_NAME')) define('APP_NAME', 'CodeVesper');
 if (!defined('APP_TAGLINE')) define('APP_TAGLINE', 'Hotel & Restaurant Management Suite');
 if (!defined('APP_LOGO')) define('APP_LOGO', 'assets/images/logo.jpg');
 if (!defined('APP_URL')) define('APP_URL', getEnvVar('APP_URL', 'http://localhost:8080/Hotel'));
-if (!defined('CURRENCY_SYMBOL')) define('CURRENCY_SYMBOL', 'LKR ');
+if (!defined('APP_CURRENCY')) define('APP_CURRENCY', getEnvVar('APP_CURRENCY', 'LKR '));

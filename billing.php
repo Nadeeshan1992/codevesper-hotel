@@ -293,7 +293,7 @@ $invoicesHistory = $db->query("
                 <input type="hidden" id="settleRoomId">
                 <div class="text-center p-3 bg-light rounded-3 border mb-3">
                     <span class="text-muted small">Final Balance Due to Settle:</span>
-                    <h2 class="fw-bold text-danger my-1" id="modalDueAmount"><?= CURRENCY_SYMBOL ?>0.00</h2>
+                    <h2 class="fw-bold text-danger my-1" id="modalDueAmount"><?= APP_CURRENCY ?>0.00</h2>
                     <small class="text-success"><i class="fa-solid fa-circle-check me-1"></i> Room will auto-switch to <strong>Dirty</strong> for Housekeeping</small>
                 </div>
 

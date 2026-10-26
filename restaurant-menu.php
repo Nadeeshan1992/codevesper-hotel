@@ -163,12 +163,12 @@ $menuItems = $db->query("
                     </div>
                     <div class="row g-2 mb-3">
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Selling Price (<?= CURRENCY_SYMBOL ?>) *</label>
-                            <input type="number" name="price" class="form-control" step="0.5" required placeholder="18.50">
+                            <label class="form-label small fw-bold">Selling Price (<?= APP_CURRENCY ?>) *</label>
+                            <input type="number" name="price" class="form-control" step="10" required placeholder="2200.00">
                         </div>
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Cost Price (<?= CURRENCY_SYMBOL ?>)</label>
-                            <input type="number" name="cost_price" class="form-control" step="0.5" placeholder="6.00">
+                            <label class="form-label small fw-bold">Cost Price (<?= APP_CURRENCY ?>)</label>
+                            <input type="number" name="cost_price" class="form-control" step="10" placeholder="950.00">
                         </div>
                     </div>
                     <div class="mb-3">

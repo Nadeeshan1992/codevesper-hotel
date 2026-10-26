@@ -215,8 +215,8 @@ $availableRooms = $db->query("
                             <input type="number" name="adults" class="form-control" value="2" min="1">
                         </div>
                         <div class="col-6">
-                            <label class="form-label small fw-bold">Advance Deposit (<?= CURRENCY_SYMBOL ?>)</label>
-                            <input type="number" name="advance_deposit" class="form-control" value="100.00" step="10">
+                            <label class="form-label small fw-bold">Advance Deposit (<?= APP_CURRENCY ?>)</label>
+                            <input type="number" name="advance_deposit" class="form-control" value="5000.00" step="500">
                         </div>
                     </div>
                 </div>

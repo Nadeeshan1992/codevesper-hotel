@@ -509,8 +509,8 @@ $recentOrders = $db->query("
                         <input type="number" id="checkinStayDays" class="form-control" value="1" min="1" max="365">
                     </div>
                     <div class="col-6">
-                        <label class="form-label small fw-bold">Advance Deposit (<?= CURRENCY_SYMBOL ?>)</label>
-                        <input type="number" id="checkinDeposit" class="form-control" value="0.00" step="10">
+                        <label class="form-label small fw-bold">Advance Deposit (<?= APP_CURRENCY ?>)</label>
+                        <input type="number" id="checkinDeposit" class="form-control" value="0.00" step="100">
                     </div>
                 </div>
             </div>
@@ -529,7 +529,7 @@ let walkinModalInstance = null;
 
 function openWalkinCheckin(roomId, roomNumber, rate) {
     document.getElementById('checkinRoomId').value = roomId;
-    document.getElementById('modalRoomTitle').innerText = roomNumber + ' (' + '<?= CURRENCY_SYMBOL ?>' + rate + '/night)';
+    document.getElementById('modalRoomTitle').innerText = roomNumber + ' (' + '<?= APP_CURRENCY ?>' + rate + '/night)';
     document.getElementById('checkinGuestName').value = '';
     document.getElementById('checkinPhone').value = '';
     document.getElementById('checkinIdNumber').value = '';

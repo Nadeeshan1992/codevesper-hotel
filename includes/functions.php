@@ -4,7 +4,8 @@
  */
 
 function formatMoney($amount): string {
-    return CURRENCY_SYMBOL . number_format((float)$amount, 2);
+    $symbol = defined('APP_CURRENCY') ? APP_CURRENCY : 'LKR ';
+    return $symbol . number_format((float)$amount, 2);
 }
 
 function formatDate($date, $format = 'M d, Y'): string {
