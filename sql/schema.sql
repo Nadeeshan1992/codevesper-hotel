@@ -163,10 +163,10 @@ CREATE TABLE `room_types` (
 ) ENGINE=InnoDB;
 
 INSERT INTO `room_types` (`id`, `name`, `code`, `base_price`, `capacity`, `amenities`, `description`) VALUES
-(1, 'Deluxe King', 'DLX-K', 120.00, 2, 'King Bed, AC, Smart TV, Wi-Fi, Mini Bar, Balcony', 'Spacious deluxe room with balcony and luxury king bed'),
-(2, 'Deluxe Twin', 'DLX-T', 110.00, 2, 'Twin Beds, AC, Smart TV, Wi-Fi, Coffee Maker', 'Comfortable twin bedding perfect for friends or colleagues'),
-(3, 'Executive Suite', 'EXEC-S', 190.00, 3, 'King Bed + Sofa, Jacuzzi, Ocean/Garden View, Kitchenette', 'Premium suite with separate seating lounge and panoramic views'),
-(4, 'Presidential Penthouse', 'PRES-P', 320.00, 4, 'Master King, Dining Area, Terrace, Private Jacuzzi', 'Top-tier luxury penthouse on 3rd floor with private terrace');
+(1, 'Deluxe King', 'DLX-K', 18000.00, 2, 'King Bed, AC, Smart TV, Wi-Fi, Mini Bar, Balcony', 'Spacious deluxe room with balcony and luxury king bed'),
+(2, 'Deluxe Twin', 'DLX-T', 16000.00, 2, 'Twin Beds, AC, Smart TV, Wi-Fi, Coffee Maker', 'Comfortable twin bedding perfect for friends or colleagues'),
+(3, 'Executive Suite', 'EXEC-S', 28000.00, 3, 'King Bed + Sofa, Jacuzzi, Ocean/Garden View, Kitchenette', 'Premium suite with separate seating lounge and panoramic views'),
+(4, 'Presidential Penthouse', 'PRES-P', 55000.00, 4, 'Master King, Dining Area, Terrace, Private Jacuzzi', 'Top-tier luxury penthouse on 3rd floor with private terrace');
 
 CREATE TABLE `rooms` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -181,19 +181,20 @@ CREATE TABLE `rooms` (
 
 -- Exact 13 Rooms Configuration (Ground, 1st & 2nd/3rd Floors)
 INSERT INTO `rooms` (`id`, `room_number`, `room_type_id`, `floor`, `status`, `daily_rate`, `notes`) VALUES
-(1,  'Room 101', 1, 1, 'vacant', 120.00, 'Ground floor garden view'),
-(2,  'Room 102', 1, 1, 'occupied', 120.00, 'Garden view with easy lobby access'),
-(3,  'Room 103', 2, 1, 'vacant', 110.00, 'Twin beds, quiet wing'),
-(4,  'Room 104', 2, 1, 'dirty', 110.00, 'Checked out this afternoon - needs turnaround'),
-(5,  'Room 105', 1, 1, 'reserved', 120.00, 'Reserved for VIP arrival tonight'),
-(6,  'Room 201', 1, 2, 'occupied', 120.00, 'First floor king suite with balcony'),
-(7,  'Room 202', 1, 2, 'vacant', 120.00, 'First floor king with balcony'),
-(8,  'Room 203', 2, 2, 'vacant', 110.00, 'First floor twin beds'),
-(9,  'Room 204', 2, 2, 'maintenance', 110.00, 'AC servicing in progress'),
-(10, 'Room 205', 3, 2, 'occupied', 190.00, 'Corner Executive Suite with jacuzzi'),
-(11, 'Room 301', 3, 3, 'vacant', 190.00, 'Top floor executive luxury suite'),
-(12, 'Room 302', 3, 3, 'vacant', 190.00, 'Top floor executive luxury suite'),
-(13, 'Room 303', 4, 3, 'reserved', 320.00, 'Presidential Penthouse with panoramic terrace');
+(1,  'Room 101', 1, 1, 'vacant', 18000.00, 'Ground floor garden view'),
+(2,  'Room 102', 1, 1, 'occupied', 18000.00, 'Garden view with easy lobby access'),
+(3,  'Room 103', 2, 1, 'vacant', 16000.00, 'Twin beds, quiet wing'),
+(4,  'Room 104', 2, 1, 'dirty', 16000.00, 'Checked out this afternoon - needs turnaround'),
+(5,  'Room 105', 1, 1, 'reserved', 18000.00, 'Reserved for VIP arrival tonight'),
+(6,  'Room 201', 1, 2, 'occupied', 18000.00, 'First floor king suite with balcony'),
+(7,  'Room 202', 1, 2, 'vacant', 18000.00, 'First floor king with balcony'),
+(8,  'Room 203', 2, 2, 'vacant', 16000.00, 'First floor twin beds'),
+(9,  'Room 204', 2, 2, 'maintenance', 16000.00, 'AC servicing in progress'),
+(10, 'Room 205', 3, 2, 'occupied', 28000.00, 'Corner Executive Suite with jacuzzi'),
+(11, 'Room 301', 3, 3, 'vacant', 28000.00, 'Top floor executive luxury suite'),
+(12, 'Room 302', 3, 3, 'vacant', 28000.00, 'Top floor executive luxury suite'),
+(13, 'Room 303', 4, 3, 'reserved', 55000.00, 'Presidential Penthouse with panoramic terrace'),
+(15, 'Room 106', 2, 1, 'vacant', 16000.00, 'Deluxe Twin with garden view');
 
 -- 6. Guests & Reservations
 CREATE TABLE `guests` (

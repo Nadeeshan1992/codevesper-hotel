@@ -22,7 +22,7 @@ if ($action === 'settle_checkout') {
     try {
         $db->beginTransaction();
 
-        // Find active check-in for room
+        // Find active check-in for room with row lock to prevent race conditions & double settlement
         $ciStmt = $db->prepare("
             SELECT ci.*, r.room_number, r.daily_rate, g.id as guest_id, g.full_name as guest_name, res.id as res_id
             FROM check_ins ci
@@ -31,12 +31,13 @@ if ($action === 'settle_checkout') {
             LEFT JOIN reservations res ON ci.reservation_id = res.id
             WHERE ci.room_id = ? AND ci.status = 'active'
             LIMIT 1
+            FOR UPDATE
         ");
         $ciStmt->execute([$roomId]);
         $checkin = $ciStmt->fetch();
 
         if (!$checkin) {
-            throw new Exception("No active check-in found for this room.");
+            throw new Exception("This room check-in has already been settled and completed.");
         }
 
         // Calculate nights stayed (at least 1 night)
@@ -77,7 +78,16 @@ if ($action === 'settle_checkout') {
         ]);
         $invoiceId = (int)$db->lastInsertId();
 
-        // Record final payment transaction
+        // 1. Credit advance deposit if previously paid
+        if ($depositPaid > 0) {
+            $depStmt = $db->prepare("
+                INSERT INTO payments (invoice_id, amount, payment_method, notes, recorded_by)
+                VALUES (?, ?, 'Advance Deposit', 'Advance deposit credited towards checkout invoice', ?)
+            ");
+            $depStmt->execute([$invoiceId, $depositPaid, $_SESSION['user_id']]);
+        }
+
+        // 2. Record final payment transaction for the remaining balance
         if ($netPayable > 0) {
             $payStmt = $db->prepare("
                 INSERT INTO payments (invoice_id, amount, payment_method, notes, recorded_by)

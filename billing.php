@@ -315,7 +315,7 @@ $invoicesHistory = $db->query("
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger px-4" onclick="executeCheckoutSettlement()">
+                <button type="button" class="btn btn-danger px-4" id="btnConfirmSettle" onclick="executeCheckoutSettlement()">
                     <i class="fa-solid fa-check-double me-1"></i> Confirm Settle & Release Room
                 </button>
             </div>
@@ -328,10 +328,25 @@ function openCheckoutModal(roomId, roomNumber, dueAmount) {
     document.getElementById('settleRoomId').value = roomId;
     document.getElementById('modalRoomLabel').innerText = roomNumber;
     document.getElementById('modalDueAmount').innerText = dueAmount;
+    
+    // Reset button state
+    const btn = document.getElementById('btnConfirmSettle');
+    if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-check-double me-1"></i> Confirm Settle & Release Room';
+    }
+    
     new bootstrap.Modal(document.getElementById('checkoutModal')).show();
 }
 
 function executeCheckoutSettlement() {
+    const btn = document.getElementById('btnConfirmSettle');
+    if (btn) {
+        if (btn.disabled) return;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-1"></i> Processing Settlement...';
+    }
+
     const roomId = document.getElementById('settleRoomId').value;
     const method = document.getElementById('settlePaymentMethod').value;
     const notes = document.getElementById('settleNotes').value;
@@ -348,7 +363,10 @@ function executeCheckoutSettlement() {
     })
     .then(res => res.json())
     .then(data => {
-        bootstrap.Modal.getInstance(document.getElementById('checkoutModal')).hide();
+        const modalEl = document.getElementById('checkoutModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (modalInstance) modalInstance.hide();
+        
         if (data.success) {
             Swal.fire({
                 icon: 'success',
@@ -359,8 +377,19 @@ function executeCheckoutSettlement() {
                 location.href = 'rooms.php';
             });
         } else {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-check-double me-1"></i> Confirm Settle & Release Room';
+            }
             Swal.fire({ icon: 'error', title: 'Settlement Failed', text: data.message });
         }
+    })
+    .catch(err => {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-check-double me-1"></i> Confirm Settle & Release Room';
+        }
+        Swal.fire({ icon: 'error', title: 'Network Error', text: 'An error occurred while connecting to server.' });
     });
 }
 
