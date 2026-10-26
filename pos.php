@@ -665,7 +665,23 @@ function executeDirectPayment() {
     .then(data => {
         bootstrap.Modal.getInstance(document.getElementById('paymentModal')).hide();
         if (data.success) {
-            showNotify('success', 'Payment Received!', `Order #${data.order_number} marked as Paid via <strong>${payMethod}</strong>.<br>Amount: ${CURRENCY_SYM}${parseFloat(data.total_amount).toFixed(2)}`);
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Payment Received!',
+                    html: `Order <strong>#${data.order_number}</strong> marked as Paid via <strong>${payMethod}</strong>.<br>Amount: <strong>${CURRENCY_SYM}${parseFloat(data.total_amount).toFixed(2)}</strong>`,
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fa-solid fa-print me-1"></i> Print POS Receipt',
+                    cancelButtonText: 'Done',
+                    confirmButtonColor: '#16a34a'
+                }).then(res => {
+                    if (res.isConfirmed) {
+                        window.open('print-invoice.php?order=' + encodeURIComponent(data.order_number) + '&autoprint=1', '_blank', 'width=420,height=720,scrollbars=yes');
+                    }
+                });
+            } else {
+                showNotify('success', 'Payment Received!', `Order #${data.order_number} marked as Paid via <strong>${payMethod}</strong>.<br>Amount: ${CURRENCY_SYM}${parseFloat(data.total_amount).toFixed(2)}`);
+            }
             cart = [];
             renderCart();
         } else {

@@ -241,7 +241,7 @@ $invoicesHistory = $db->query("
                                 <th>Invoice #</th>
                                 <th>Guest / Room</th>
                                 <th>Total</th>
-                                <th class="text-end">Print</th>
+                                <th class="text-end">POS Receipt</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -264,8 +264,8 @@ $invoicesHistory = $db->query("
                                             <span class="fw-bold text-success small"><?= formatMoney($inv['total_amount']) ?></span>
                                         </td>
                                         <td class="text-end">
-                                            <button class="btn btn-sm btn-outline-secondary py-0 px-2" onclick="printInvoicePrompt('<?= htmlspecialchars($inv['invoice_number']) ?>')">
-                                                <i class="fa-solid fa-print"></i>
+                                            <button class="btn btn-sm btn-outline-success py-1 px-2 fw-bold" onclick="printInvoicePrompt('<?= htmlspecialchars($inv['invoice_number']) ?>')" title="Print POS Thermal Receipt (80mm)">
+                                                <i class="fa-solid fa-print me-1"></i> POS Print
                                             </button>
                                         </td>
                                     </tr>
@@ -371,10 +371,20 @@ function executeCheckoutSettlement() {
             Swal.fire({
                 icon: 'success',
                 title: 'Checkout Succeeded!',
-                html: `<strong>Invoice #${data.invoice_number}</strong><br>${data.message}`,
-                confirmButtonText: 'Print Invoice / Done'
-            }).then(() => {
-                location.href = 'rooms.php';
+                html: `<strong>Invoice #${data.invoice_number}</strong><br>${data.message}<div class="alert alert-success bg-opacity-10 border-0 mt-3 text-start small"><i class="fa-solid fa-receipt me-1"></i> Ready to print POS thermal receipt (80mm).</div>`,
+                showCancelButton: true,
+                confirmButtonText: '<i class="fa-solid fa-print me-1"></i> Print POS Receipt',
+                cancelButtonText: '<i class="fa-solid fa-check me-1"></i> Done',
+                confirmButtonColor: '#16a34a',
+                cancelButtonColor: '#475569'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const printUrl = 'print-invoice.php?inv=' + encodeURIComponent(data.invoice_number) + '&autoprint=1';
+                    window.open(printUrl, '_blank', 'width=420,height=720,scrollbars=yes');
+                }
+                setTimeout(() => {
+                    location.href = 'billing.php';
+                }, 500);
             });
         } else {
             if (btn) {
@@ -394,18 +404,11 @@ function executeCheckoutSettlement() {
 }
 
 function printInvoicePrompt(invoiceNumber) {
-    Swal.fire({
-        title: 'Invoice #' + invoiceNumber,
-        text: 'Ready to send to physical thermal printer (80mm) or standard A4 document PDF.',
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonText: '<i class="fa-solid fa-print me-1"></i> Print Receipt',
-        confirmButtonColor: '#1e3a8a'
-    }).then(res => {
-        if (res.isConfirmed) {
-            window.print();
-        }
-    });
+    const printUrl = 'print-invoice.php?inv=' + encodeURIComponent(invoiceNumber) + '&autoprint=1';
+    const printWin = window.open(printUrl, '_blank', 'width=420,height=720,scrollbars=yes');
+    if (printWin) {
+        printWin.focus();
+    }
 }
 </script>
 
