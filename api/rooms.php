@@ -40,7 +40,7 @@ if ($action === 'update_status') {
 if ($action === 'quick_checkin') {
     $roomId = (int)($_POST['room_id'] ?? 0);
     $guestName = sanitize($_POST['guest_name'] ?? '');
-    $phone = sanitize($_POST['phone'] ?? '');
+    $phone = formatPhoneNumber(sanitize($_POST['phone'] ?? ''));
     $idNumber = sanitize($_POST['id_number'] ?? '');
     $days = max(1, (int)($_POST['stay_days'] ?? 1));
     $deposit = (float)($_POST['deposit'] ?? 0.00);

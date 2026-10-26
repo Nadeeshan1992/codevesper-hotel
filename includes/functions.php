@@ -18,6 +18,22 @@ function formatDateTime($dateTime, $format = 'M d, Y h:i A'): string {
     return date($format, strtotime($dateTime));
 }
 
+function formatPhoneNumber(string $phone): string {
+    $clean = trim($phone);
+    if (empty($clean)) return '-';
+    $digits = preg_replace('/[^\d+]/', '', $clean);
+    if (preg_match('/^0(7\d{8})$/', $digits, $m)) {
+        return '+94 ' . substr($m[1], 0, 2) . ' ' . substr($m[1], 2, 3) . ' ' . substr($m[1], 5);
+    }
+    if (preg_match('/^(7\d{8})$/', $digits, $m)) {
+        return '+94 ' . substr($m[1], 0, 2) . ' ' . substr($m[1], 2, 3) . ' ' . substr($m[1], 5);
+    }
+    if (preg_match('/^\+?94(7\d{8})$/', $digits, $m)) {
+        return '+94 ' . substr($m[1], 0, 2) . ' ' . substr($m[1], 2, 3) . ' ' . substr($m[1], 5);
+    }
+    return $clean;
+}
+
 function sanitize($input): string {
     return htmlspecialchars(trim($input ?? ''), ENT_QUOTES, 'UTF-8');
 }

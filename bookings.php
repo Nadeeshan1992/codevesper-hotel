@@ -12,7 +12,7 @@ $db = getDbConnection();
 // Handle new advance booking creation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_booking'])) {
     $guestName = sanitize($_POST['guest_name'] ?? '');
-    $phone = sanitize($_POST['phone'] ?? '');
+    $phone = formatPhoneNumber(sanitize($_POST['phone'] ?? ''));
     $email = sanitize($_POST['email'] ?? '');
     $roomId = (int)$_POST['room_id'];
     $checkIn = $_POST['check_in_date'];
@@ -126,7 +126,7 @@ $availableRooms = $db->query("
                         </td>
                         <td>
                             <div class="fw-bold text-dark"><?= htmlspecialchars($res['guest_name']) ?></div>
-                            <small class="text-muted"><i class="fa-solid fa-phone me-1"></i> <?= htmlspecialchars($res['guest_phone']) ?></small>
+                            <small class="text-muted"><i class="fa-solid fa-phone me-1"></i> <?= htmlspecialchars(formatPhoneNumber($res['guest_phone'])) ?></small>
                         </td>
                         <td>
                             <span class="badge bg-light text-dark border fw-bold"><?= htmlspecialchars($res['room_number']) ?></span>
@@ -182,7 +182,7 @@ $availableRooms = $db->query("
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <label class="form-label small fw-bold">Phone Number *</label>
-                            <input type="text" name="phone" class="form-control" required placeholder="+1 555-0199">
+                            <input type="text" name="phone" class="form-control" required placeholder="+94 77 123 4567">
                         </div>
                         <div class="col-6">
                             <label class="form-label small fw-bold">Email Address</label>

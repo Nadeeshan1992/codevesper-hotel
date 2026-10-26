@@ -146,10 +146,10 @@ CREATE TABLE `users` (
 
 -- Seed Default Users (Password for all accounts: password123)
 INSERT INTO `users` (`id`, `role_id`, `full_name`, `username`, `password_hash`, `email`, `phone`) VALUES
-(1, 1, 'System Administrator', 'admin', '$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6', 'admin@luxuryhotel.com', '+1 555-0101'),
-(2, 2, 'Robert Sterling (Owner)', 'owner', '$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6', 'owner@luxuryhotel.com', '+1 555-0102'),
-(3, 3, 'Sarah Jenkins (Reception)', 'reception', '$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6', 'reception@luxuryhotel.com', '+1 555-0103'),
-(4, 4, 'David Miller (Waiter)', 'waiter', '$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6', 'waiter@luxuryhotel.com', '+1 555-0104');
+(1, 1, 'System Administrator', 'admin', '$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6', 'admin@luxuryhotel.com', '+94 77 123 0101'),
+(2, 2, 'Robert Sterling (Owner)', 'owner', '$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6', 'owner@luxuryhotel.com', '+94 77 123 0102'),
+(3, 3, 'Sarah Jenkins (Reception)', 'reception', '$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6', 'reception@luxuryhotel.com', '+94 77 123 0103'),
+(4, 4, 'David Miller (Waiter)', 'waiter', '$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6', 'waiter@luxuryhotel.com', '+94 77 123 0104');
 
 -- 5. Room Types & Rooms (Scalable Dynamic Inventory - Starter rooms seeded)
 CREATE TABLE `room_types` (
@@ -454,11 +454,11 @@ CREATE TABLE `staff` (
 ) ENGINE=InnoDB;
 
 INSERT INTO `staff` (`id`, `user_id`, `staff_code`, `first_name`, `last_name`, `designation`, `department`, `phone`, `email`, `salary`, `join_date`, `status`) VALUES
-(1, 1, 'STF-001', 'System', 'Admin', 'IT & Systems Manager', 'Management', '+1 555-0101', 'admin@luxuryhotel.com', 2800.00, '2023-01-15', 'active'),
-(2, 3, 'STF-002', 'Sarah', 'Jenkins', 'Senior Receptionist', 'Front Office', '+1 555-0103', 'sarah.j@luxuryhotel.com', 1900.00, '2023-03-01', 'active'),
-(3, 4, 'STF-003', 'David', 'Miller', 'Head Waiter', 'F&B Service', '+1 555-0104', 'david.m@luxuryhotel.com', 1500.00, '2023-05-10', 'active'),
-(4, NULL, 'STF-004', 'Chef Antonio', 'Rossi', 'Executive Head Chef', 'Kitchen', '+1 555-0188', 'antonio.chef@luxuryhotel.com', 3200.00, '2022-11-01', 'active'),
-(5, NULL, 'STF-005', 'Maria', 'Santos', 'Housekeeping Supervisor', 'Housekeeping', '+1 555-0192', 'maria.s@luxuryhotel.com', 1450.00, '2023-02-15', 'active');
+(1, 1, 'STF-001', 'System', 'Admin', 'IT & Systems Manager', 'Management', '+94 77 123 0101', 'admin@luxuryhotel.com', 85000.00, '2023-01-15', 'active'),
+(2, 3, 'STF-002', 'Sarah', 'Jenkins', 'Senior Receptionist', 'Front Office', '+94 77 123 0103', 'sarah.j@luxuryhotel.com', 65000.00, '2023-03-01', 'active'),
+(3, 4, 'STF-003', 'David', 'Miller', 'Head Waiter', 'F&B Service', '+94 77 123 0104', 'david.m@luxuryhotel.com', 55000.00, '2023-05-10', 'active'),
+(4, NULL, 'STF-004', 'Chef Antonio', 'Rossi', 'Executive Head Chef', 'Kitchen', '+94 77 123 0188', 'antonio.chef@luxuryhotel.com', 95000.00, '2022-11-01', 'active'),
+(5, NULL, 'STF-005', 'Maria', 'Santos', 'Housekeeping Supervisor', 'Housekeeping', '+94 77 123 0192', 'maria.s@luxuryhotel.com', 50000.00, '2023-02-15', 'active');
 
 CREATE TABLE `staff_attendance` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,

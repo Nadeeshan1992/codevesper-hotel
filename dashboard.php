@@ -381,7 +381,7 @@ $recentOrders = $db->query("
                                                 </td>
                                                 <td>
                                                     <div class="fw-bold text-dark small"><?= htmlspecialchars($res['guest_name']) ?></div>
-                                                    <small class="text-muted"><i class="fa-solid fa-phone me-1"></i><?= htmlspecialchars($res['guest_phone']) ?></small>
+                                                    <small class="text-muted"><i class="fa-solid fa-phone me-1"></i><?= htmlspecialchars(formatPhoneNumber($res['guest_phone'])) ?></small>
                                                 </td>
                                                 <td>
                                                     <span class="badge bg-warning-subtle text-warning-emphasis border border-warning fw-bold">

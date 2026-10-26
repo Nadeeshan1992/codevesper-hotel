@@ -141,7 +141,7 @@ CREATE TABLE `guests` (
 
 LOCK TABLES `guests` WRITE;
 /*!40000 ALTER TABLE `guests` DISABLE KEYS */;
-INSERT INTO `guests` VALUES (1,'Alexander Wright','+1 555-7821','alex.wright@gmail.com','Passport','P987654321',NULL,'United States',NULL,'2026-10-25 14:44:15'),(2,'Elena Rostova','+44 7911-123456','elena.rostova@outlook.com','Passport','GB8823190',NULL,'United Kingdom',NULL,'2026-10-25 14:44:15'),(3,'Marcus Vance','+1 555-4390','marcus.v@corporate.com','Driving License','DL-2023-9912',NULL,'Canada',NULL,'2026-10-25 14:44:15'),(4,'Sophia Chen','+94 77 123 4567','sophia.c@asia-travel.com','Passport','E89123049',NULL,'Singapore',NULL,'2026-10-25 16:40:48'),(5,'Dr. Kasun Fernando','+94 71 987 6543','k.fernando@colombo.med.lk','National ID','198421098471',NULL,'Sri Lanka',NULL,'2026-10-25 16:40:48'),(6,'nadeeshan thilina','0710475200',NULL,'National ID','922553645',NULL,'Domestic',NULL,'2026-10-25 17:53:43');
+INSERT INTO `guests` VALUES (1,'Alexander Wright','+1 555-7821','alex.wright@gmail.com','Passport','P987654321',NULL,'United States',NULL,'2026-10-25 14:44:15'),(2,'Elena Rostova','+44 7911-123456','elena.rostova@outlook.com','Passport','GB8823190',NULL,'United Kingdom',NULL,'2026-10-25 14:44:15'),(3,'Marcus Vance','+1 555-4390','marcus.v@corporate.com','Driving License','DL-2023-9912',NULL,'Canada',NULL,'2026-10-25 14:44:15'),(4,'Sophia Chen','+94 77 123 4567','sophia.c@asia-travel.com','Passport','E89123049',NULL,'Singapore',NULL,'2026-10-25 16:40:48'),(5,'Dr. Kasun Fernando','+94 71 987 6543','k.fernando@colombo.med.lk','National ID','198421098471',NULL,'Sri Lanka',NULL,'2026-10-25 16:40:48'),(6,'nadeeshan thilina','+94 71 047 5200',NULL,'National ID','922553645',NULL,'Domestic',NULL,'2026-10-25 17:53:43');
 /*!40000 ALTER TABLE `guests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -593,7 +593,7 @@ CREATE TABLE `staff` (
 
 LOCK TABLES `staff` WRITE;
 /*!40000 ALTER TABLE `staff` DISABLE KEYS */;
-INSERT INTO `staff` VALUES (1,1,'STF-001','System','Admin','IT & Systems Manager','Management','+1 555-0101','admin@luxuryhotel.com',2800.00,'2023-01-15','active'),(2,3,'STF-002','Sarah','Jenkins','Senior Receptionist','Front Office','+1 555-0103','sarah.j@luxuryhotel.com',1900.00,'2023-03-01','active'),(3,4,'STF-003','David','Miller','Head Waiter','F&B Service','+1 555-0104','david.m@luxuryhotel.com',1500.00,'2023-05-10','active'),(4,NULL,'STF-004','Chef Antonio','Rossi','Executive Head Chef','Kitchen','+1 555-0188','antonio.chef@luxuryhotel.com',3200.00,'2022-11-01','active'),(5,NULL,'STF-005','Maria','Santos','Housekeeping Supervisor','Housekeeping','+1 555-0192','maria.s@luxuryhotel.com',1450.00,'2023-02-15','active');
+INSERT INTO `staff` VALUES (1,1,'STF-001','System','Admin','IT & Systems Manager','Management','+94 77 123 0101','admin@luxuryhotel.com',85000.00,'2023-01-15','active'),(2,3,'STF-002','Sarah','Jenkins','Senior Receptionist','Front Office','+94 77 123 0103','sarah.j@luxuryhotel.com',65000.00,'2023-03-01','active'),(3,4,'STF-003','David','Miller','Head Waiter','F&B Service','+94 77 123 0104','david.m@luxuryhotel.com',55000.00,'2023-05-10','active'),(4,NULL,'STF-004','Chef Antonio','Rossi','Executive Head Chef','Kitchen','+94 77 123 0188','antonio.chef@luxuryhotel.com',95000.00,'2022-11-01','active'),(5,NULL,'STF-005','Maria','Santos','Housekeeping Supervisor','Housekeeping','+94 77 123 0192','maria.s@luxuryhotel.com',50000.00,'2023-02-15','active');
 /*!40000 ALTER TABLE `staff` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -750,7 +750,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,1,'System Administrator','admin','$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6','admin@luxuryhotel.com','+1 555-0101','default_avatar.png','active','2026-10-25 14:44:15'),(2,2,'Robert Sterling (Owner)','owner','$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6','owner@luxuryhotel.com','+1 555-0102','default_avatar.png','active','2026-10-25 14:44:15'),(3,3,'Sarah Jenkins (Reception)','reception','$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6','reception@luxuryhotel.com','+1 555-0103','default_avatar.png','active','2026-10-25 14:44:15'),(4,4,'David Miller (Waiter)','waiter','$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6','waiter@luxuryhotel.com','+1 555-0104','default_avatar.png','active','2026-10-25 14:44:15');
+INSERT INTO `users` VALUES (1,1,'System Administrator','admin','$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6','admin@luxuryhotel.com','+94 77 123 0101','default_avatar.png','active','2026-10-25 14:44:15'),(2,2,'Robert Sterling (Owner)','owner','$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6','owner@luxuryhotel.com','+94 77 123 0102','default_avatar.png','active','2026-10-25 14:44:15'),(3,3,'Sarah Jenkins (Reception)','reception','$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6','reception@luxuryhotel.com','+94 77 123 0103','default_avatar.png','active','2026-10-25 14:44:15'),(4,4,'David Miller (Waiter)','waiter','$2y$10$tvYdxzJP2JC6gP7Y3A5.SeI2uqXacwQcpirsG0wTVOXrtV05ZHcP6','waiter@luxuryhotel.com','+94 77 123 0104','default_avatar.png','active','2026-10-25 14:44:15');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

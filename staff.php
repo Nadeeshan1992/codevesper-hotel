@@ -170,7 +170,7 @@ foreach ($staffMembers as $sm) {
                             <span class="badge bg-light text-dark border"><?= htmlspecialchars($s['department']) ?></span>
                         </td>
                         <td>
-                            <div class="small text-dark"><i class="fa-solid fa-phone me-1 text-muted"></i> <?= htmlspecialchars($s['phone']) ?></div>
+                            <div class="small text-dark"><i class="fa-solid fa-phone me-1 text-muted"></i> <?= htmlspecialchars(formatPhoneNumber($s['phone'])) ?></div>
                             <small class="text-muted"><?= htmlspecialchars($s['email'] ?? '-') ?></small>
                         </td>
                         <td>
@@ -253,7 +253,7 @@ foreach ($staffMembers as $sm) {
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <label class="form-label small fw-bold">Phone Number *</label>
-                            <input type="text" name="phone" class="form-control" required>
+                            <input type="text" name="phone" class="form-control" placeholder="+94 77 123 4567" required>
                         </div>
                         <div class="col-6">
                             <label class="form-label small fw-bold">Monthly Salary (<?= APP_CURRENCY ?>)</label>

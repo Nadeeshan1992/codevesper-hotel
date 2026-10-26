@@ -170,7 +170,7 @@ foreach ($rooms as $r) {
                                 <?php if ($room['status'] === 'occupied' && !empty($room['guest_name'])): ?>
                                     <div class="bg-danger bg-opacity-10 border border-danger-subtle rounded-2 p-2 small mb-3">
                                         <div class="fw-bold text-danger"><i class="fa-solid fa-user me-1"></i> <?= htmlspecialchars($room['guest_name']) ?></div>
-                                        <div class="text-muted"><i class="fa-solid fa-phone me-1"></i> <?= htmlspecialchars($room['guest_phone']) ?></div>
+                                        <div class="text-muted"><i class="fa-solid fa-phone me-1"></i> <?= htmlspecialchars(formatPhoneNumber($room['guest_phone'])) ?></div>
                                         <div class="text-muted"><i class="fa-regular fa-calendar-days me-1"></i> Check-out: <?= formatDate($room['check_out_date']) ?></div>
                                     </div>
                                 <?php elseif ($room['status'] === 'reserved'): ?>
@@ -423,7 +423,7 @@ foreach ($rooms as $r) {
                 <div class="row g-2 mb-3">
                     <div class="col-6">
                         <label class="form-label small fw-bold">Phone Number *</label>
-                        <input type="text" id="checkinPhone" class="form-control" placeholder="+1 555-0199" required>
+                        <input type="text" id="checkinPhone" class="form-control" placeholder="+94 77 123 4567" required>
                     </div>
                     <div class="col-6">
                         <label class="form-label small fw-bold">National ID / Passport</label>
@@ -604,6 +604,11 @@ function submitCreateRoomType() {
 function openCheckinModal(roomId, roomNumber, rate) {
     document.getElementById('checkinRoomId').value = roomId;
     document.getElementById('modalRoomTitle').innerText = roomNumber + ' (' + '<?= APP_CURRENCY ?>' + rate + '/night)';
+    document.getElementById('checkinGuestName').value = '';
+    document.getElementById('checkinPhone').value = '';
+    document.getElementById('checkinIdNumber').value = '';
+    document.getElementById('checkinStayDays').value = '1';
+    document.getElementById('checkinDeposit').value = '0.00';
     new bootstrap.Modal(document.getElementById('checkinModal')).show();
 }
 

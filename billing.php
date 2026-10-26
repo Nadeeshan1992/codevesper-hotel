@@ -121,7 +121,7 @@ $invoicesHistory = $db->query("
                             </div>
                             <div class="col-6 col-sm-3">
                                 <span class="text-muted small">Phone:</span>
-                                <div class="fw-bold text-dark"><?= htmlspecialchars($activeFolio['guest_phone']) ?></div>
+                                <div class="fw-bold text-dark"><?= htmlspecialchars(formatPhoneNumber($activeFolio['guest_phone'])) ?></div>
                             </div>
                             <div class="col-6 col-sm-3">
                                 <span class="text-muted small">Check-In Time:</span>
