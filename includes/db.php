@@ -14,16 +14,17 @@ function getDbConnection(): PDO {
             PDO::ATTR_EMULATE_PREPARES   => false,
         ];
 
-        // Enable SSL when connecting to remote cloud databases (TiDB, Aiven, PlanetScale, Railway)
+        // Enable SSL only when connecting to remote cloud databases (TiDB, Aiven, PlanetScale, Railway)
+        $isRemoteHost = (DB_HOST !== 'localhost' && DB_HOST !== '127.0.0.1');
         $bundledCa = __DIR__ . '/../config/ca-bundle.crt';
         $sslCaKey = defined('\Pdo\Mysql::ATTR_SSL_CA') ? \Pdo\Mysql::ATTR_SSL_CA : (defined('PDO::MYSQL_ATTR_SSL_CA') ? @constant('PDO::MYSQL_ATTR_SSL_CA') : 1002);
         
         if (defined('DB_SSL_CA') && !empty(DB_SSL_CA) && file_exists(DB_SSL_CA)) {
             $options[$sslCaKey] = DB_SSL_CA;
-        } elseif (file_exists($bundledCa)) {
-            $options[$sslCaKey] = $bundledCa;
-        } elseif (DB_HOST !== 'localhost' && DB_HOST !== '127.0.0.1') {
-            if (file_exists('/etc/pki/tls/certs/ca-bundle.crt')) {
+        } elseif ($isRemoteHost) {
+            if (file_exists($bundledCa)) {
+                $options[$sslCaKey] = $bundledCa;
+            } elseif (file_exists('/etc/pki/tls/certs/ca-bundle.crt')) {
                 $options[$sslCaKey] = '/etc/pki/tls/certs/ca-bundle.crt';
             } elseif (file_exists('/etc/ssl/certs/ca-certificates.crt')) {
                 $options[$sslCaKey] = '/etc/ssl/certs/ca-certificates.crt';
@@ -57,11 +58,15 @@ function getDbConnection(): PDO {
                 <div class="mb-3">
                     <span class="badge-pill">
                         <i class="fa-solid fa-triangle-exclamation"></i>
-                        <span>Cloud Database Setup Required</span>
+                        <span><?= ($isRemoteHost || $isVercel) ? 'Cloud Database Setup Required' : 'Database Connection Required' ?></span>
                     </span>
                 </div>
                 <h3 class="fw-bold mb-2 text-white"><?= APP_NAME ?> Management Suite</h3>
-                <p class="text-secondary small mb-4">Your application code is deployed and working on Vercel, but needs a Cloud MySQL connection to store hotel data.</p>
+                <p class="text-secondary small mb-4">
+                    <?= ($isRemoteHost || $isVercel)
+                        ? 'Your application is deployed, but needs a Cloud MySQL connection to store hotel data.'
+                        : 'Your local application cannot establish a connection with the local MySQL server.' ?>
+                </p>
                 
                 <div class="code-box text-start">
                     <div class="text-muted small mb-1">// Attempted connection target:</div>
@@ -71,19 +76,31 @@ function getDbConnection(): PDO {
                 </div>
 
                 <div class="text-start mt-3">
-                    <h6 class="text-white fw-bold mb-2"><i class="fa-solid fa-bolt text-warning me-2"></i>How to connect your Cloud MySQL in 1 minute:</h6>
-                    <div class="step-box">
-                        <strong>1. Go to Vercel Project Dashboard:</strong>
-                        <p class="text-muted small mb-0">Open your project &rarr; <strong>Settings</strong> &rarr; <strong>Environment Variables</strong>.</p>
-                    </div>
-                    <div class="step-box">
-                        <strong>2. Add Connection Variables:</strong>
-                        <p class="text-muted small mb-0">Add <code>DB_HOST</code>, <code>DB_USER</code>, <code>DB_PASS</code>, <code>DB_NAME</code>, <code>DB_PORT</code> (or <code>DATABASE_URL</code>).</p>
-                    </div>
-                    <div class="step-box">
-                        <strong>3. Import Database Tables:</strong>
-                        <p class="text-muted small mb-0">Import <code>sql/hotel_db_export.sql</code> into your cloud MySQL database console.</p>
-                    </div>
+                    <?php if ($isRemoteHost || $isVercel): ?>
+                        <h6 class="text-white fw-bold mb-2"><i class="fa-solid fa-bolt text-warning me-2"></i>How to connect your Cloud MySQL in 1 minute:</h6>
+                        <div class="step-box">
+                            <strong>1. Go to Vercel Project Dashboard:</strong>
+                            <p class="text-muted small mb-0">Open your project &rarr; <strong>Settings</strong> &rarr; <strong>Environment Variables</strong>.</p>
+                        </div>
+                        <div class="step-box">
+                            <strong>2. Add Connection Variables:</strong>
+                            <p class="text-muted small mb-0">Add <code>DB_HOST</code>, <code>DB_USER</code>, <code>DB_PASS</code>, <code>DB_NAME</code>, <code>DB_PORT</code> (or <code>DATABASE_URL</code>).</p>
+                        </div>
+                        <div class="step-box">
+                            <strong>3. Import Database Tables:</strong>
+                            <p class="text-muted small mb-0">Import <code>sql/hotel_db_export.sql</code> into your cloud MySQL database console.</p>
+                        </div>
+                    <?php else: ?>
+                        <h6 class="text-white fw-bold mb-2"><i class="fa-solid fa-wrench text-warning me-2"></i>How to resolve this in XAMPP:</h6>
+                        <div class="step-box">
+                            <strong>1. Start MySQL in XAMPP:</strong>
+                            <p class="text-muted small mb-0">Open <strong>XAMPP Control Panel</strong> and click <strong>Start</strong> next to <strong>MySQL</strong>.</p>
+                        </div>
+                        <div class="step-box">
+                            <strong>2. Check Port 3306:</strong>
+                            <p class="text-muted small mb-0">Ensure MySQL is running on port 3306 without port conflicts.</p>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="mt-4 d-flex justify-content-center gap-3">
