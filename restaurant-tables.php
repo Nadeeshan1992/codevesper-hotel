@@ -18,10 +18,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_table_status']
 }
 
 $tables = $db->query("
-    SELECT t.*, o.order_number, o.total_amount, u.full_name as waiter_name
+    SELECT 
+        t.*,
+        COUNT(o.id) as active_orders_count,
+        COALESCE(SUM(o.total_amount), 0) as total_amount,
+        GROUP_CONCAT(o.order_number SEPARATOR ', ') as order_numbers,
+        SUBSTRING_INDEX(GROUP_CONCAT(o.order_number ORDER BY o.id DESC SEPARATOR ', '), ', ', 1) as latest_order_number,
+        SUBSTRING_INDEX(GROUP_CONCAT(COALESCE(u.full_name, 'Guest QR') ORDER BY o.id DESC SEPARATOR ', '), ', ', 1) as latest_waiter_name
     FROM dining_tables t
     LEFT JOIN orders o ON (o.table_id = t.id AND o.status IN ('pending', 'in_kitchen', 'ready'))
     LEFT JOIN users u ON o.waiter_id = u.id
+    GROUP BY t.id
     ORDER BY t.section ASC, t.id ASC
 ")->fetchAll();
 ?>
@@ -65,11 +72,25 @@ $tables = $db->query("
                     <?= getTableStatusBadge($t['status']) ?>
                 </div>
 
-                <?php if ($t['status'] === 'occupied' && !empty($t['order_number'])): ?>
+                <?php if ($t['active_orders_count'] > 0): ?>
                     <div class="p-2 bg-light rounded-2 small mt-3 border">
-                        <div class="fw-bold text-dark"><i class="fa-solid fa-receipt me-1 text-primary"></i> <?= htmlspecialchars($t['order_number']) ?></div>
-                        <div class="text-muted">Waiter: <?= htmlspecialchars($t['waiter_name'] ?? 'Staff') ?></div>
-                        <div class="text-primary fw-bold mt-1">Amount: <?= formatMoney($t['total_amount']) ?></div>
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="fw-bold text-dark font-monospace">
+                                <i class="fa-solid fa-receipt me-1 text-primary"></i> <?= htmlspecialchars($t['latest_order_number']) ?>
+                            </span>
+                            <?php if ($t['active_orders_count'] > 1): ?>
+                                <span class="badge bg-primary rounded-pill" style="font-size: 0.65rem;"><?= $t['active_orders_count'] ?> Active Orders</span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="text-muted" style="font-size: 0.72rem;">
+                            Source: 
+                            <?php if (strpos($t['latest_order_number'], 'QR-') === 0 || $t['latest_waiter_name'] === 'Guest QR'): ?>
+                                <span class="badge bg-info-subtle text-info border border-info" style="font-size: 0.65rem;"><i class="fa-solid fa-qrcode me-1"></i> Guest QR</span>
+                            <?php else: ?>
+                                <?= htmlspecialchars($t['latest_waiter_name']) ?>
+                            <?php endif; ?>
+                        </div>
+                        <div class="text-primary fw-bold mt-1">Total Bill: <?= formatMoney($t['total_amount']) ?></div>
                     </div>
                 <?php endif; ?>
             </div>
@@ -89,6 +110,10 @@ $tables = $db->query("
                         </button>
                     </form>
                 <?php endif; ?>
+
+                <a href="qr-menu.php?table=<?= $t['id'] ?>" target="_blank" class="btn btn-sm btn-outline-warning text-dark" title="View Guest QR Menu">
+                    <i class="fa-solid fa-qrcode text-warning"></i>
+                </a>
 
                 <form method="POST">
                     <input type="hidden" name="update_table_status" value="1">
