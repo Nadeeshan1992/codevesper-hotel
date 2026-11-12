@@ -57,6 +57,12 @@ $dynamicRoomCount = (int)getDbConnection()->query("SELECT COUNT(*) FROM rooms")-
             <span class="badge bg-primary ms-auto" style="font-size: 0.7rem;"><?= $dynamicRoomCount ?></span>
         </a>
 
+        <a href="timeline.php" class="nav-item-link <?= ($currentPage == 'timeline.php') ? 'active' : '' ?>">
+            <i class="fa-solid fa-calendar-days text-primary"></i>
+            <span class="fw-bold">Room Tape Chart</span>
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-auto" style="font-size: 0.65rem;">MATRIX</span>
+        </a>
+
         <?php if (hasPermission('reservations.manage') || hasPermission('frontdesk.checkin_checkout') || $roleSlug === 'owner'): ?>
         <a href="bookings.php" class="nav-item-link <?= ($currentPage == 'bookings.php') ? 'active' : '' ?>">
             <i class="fa-solid fa-calendar-check"></i>

@@ -74,6 +74,10 @@ $availableRooms = $db->query("
     JOIN room_types rt ON r.room_type_id = rt.id 
     ORDER BY r.floor ASC, r.room_number ASC
 ")->fetchAll();
+
+$prefillRoomId = isset($_GET['room_id']) ? (int)$_GET['room_id'] : 0;
+$prefillDate = isset($_GET['date']) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['date']) ? $_GET['date'] : date('Y-m-d');
+$prefillOutDate = date('Y-m-d', strtotime($prefillDate . ' +2 days'));
 ?>
 
 <?php if (!empty($bookSuccess)): ?>
@@ -83,14 +87,19 @@ $availableRooms = $db->query("
     </div>
 <?php endif; ?>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
     <div>
         <h5 class="fw-bold mb-0"><i class="fa-solid fa-calendar-check text-primary me-2"></i>Hotel Reservation Records</h5>
         <span class="text-muted small">Manage upcoming arrivals across all hotel rooms</span>
     </div>
-    <button class="btn btn-primary btn-sm px-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#newBookingModal">
-        <i class="fa-solid fa-plus me-1"></i> New Advance Reservation
-    </button>
+    <div class="d-flex align-items-center gap-2">
+        <a href="timeline.php" class="btn btn-outline-primary btn-sm px-3 rounded-pill fw-bold">
+            <i class="fa-solid fa-calendar-days me-1"></i> Room Tape Chart (Matrix)
+        </a>
+        <button class="btn btn-primary btn-sm px-3 rounded-pill fw-bold" data-bs-toggle="modal" data-bs-target="#newBookingModal">
+            <i class="fa-solid fa-plus me-1"></i> New Advance Reservation
+        </button>
+    </div>
 </div>
 
 <div class="card-custom">
@@ -193,8 +202,8 @@ $availableRooms = $db->query("
                         <label class="form-label small fw-bold">Select Room *</label>
                         <select name="room_id" class="form-select" required>
                             <?php foreach ($availableRooms as $ar): ?>
-                                <option value="<?= $ar['id'] ?>">
-                                    <?= htmlspecialchars($ar['room_number']) ?> &bull; <?= htmlspecialchars($ar['type_name']) ?> ($<?= $ar['daily_rate'] ?>/night) [<?= ucfirst($ar['status']) ?>]
+                                <option value="<?= $ar['id'] ?>" <?= ($prefillRoomId === (int)$ar['id']) ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($ar['room_number']) ?> &bull; <?= htmlspecialchars($ar['type_name']) ?> (<?= formatMoney($ar['daily_rate']) ?>/night) [<?= ucfirst($ar['status']) ?>]
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -202,11 +211,11 @@ $availableRooms = $db->query("
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <label class="form-label small fw-bold">Check-In Date *</label>
-                            <input type="date" name="check_in_date" class="form-control" value="<?= date('Y-m-d') ?>" required>
+                            <input type="date" name="check_in_date" class="form-control" value="<?= $prefillDate ?>" required>
                         </div>
                         <div class="col-6">
                             <label class="form-label small fw-bold">Check-Out Date *</label>
-                            <input type="date" name="check_out_date" class="form-control" value="<?= date('Y-m-d', strtotime('+2 days')) ?>" required>
+                            <input type="date" name="check_out_date" class="form-control" value="<?= $prefillOutDate ?>" required>
                         </div>
                     </div>
                     <div class="row g-2 mb-3">
@@ -228,5 +237,14 @@ $availableRooms = $db->query("
         </div>
     </div>
 </div>
+
+<?php if ($prefillRoomId > 0): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var modal = new bootstrap.Modal(document.getElementById('newBookingModal'));
+    modal.show();
+});
+</script>
+<?php endif; ?>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

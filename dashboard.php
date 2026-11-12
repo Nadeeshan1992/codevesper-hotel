@@ -106,7 +106,10 @@ $recentOrders = $db->query("
                 </div>
             </div>
             <div class="d-flex flex-wrap gap-2">
-                <a href="pos.php" class="btn btn-primary btn-sm px-3 rounded-pill">
+                <a href="timeline.php" class="btn btn-primary btn-sm px-3 rounded-pill fw-bold">
+                    <i class="fa-solid fa-calendar-days me-1"></i> Room Tape Chart (Matrix)
+                </a>
+                <a href="pos.php" class="btn btn-outline-primary btn-sm px-3 rounded-pill">
                     <i class="fa-solid fa-tablet-screen-button me-1"></i> Waiter Tablet POS
                 </a>
                 <a href="rooms.php" class="btn btn-outline-dark btn-sm px-3 rounded-pill">
@@ -256,7 +259,7 @@ $recentOrders = $db->query("
     <!-- Left Column: Vacant Rooms & Reserved Bookings Tabs -->
     <div class="col-12 col-xl-8">
         <div class="card-custom h-100">
-            <div class="card-header-clean bg-light bg-opacity-50">
+            <div class="card-header-clean bg-light bg-opacity-50 d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <ul class="nav nav-pills dashboard-nav-pills gap-2" id="operationalTabs" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link active d-flex align-items-center gap-2" id="vacant-tab" data-bs-toggle="pill" data-bs-target="#vacant-pane" type="button" role="tab">
@@ -273,6 +276,9 @@ $recentOrders = $db->query("
                         </button>
                     </li>
                 </ul>
+                <a href="timeline.php" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold">
+                    <i class="fa-solid fa-calendar-days me-1"></i> Open Room Tape Chart &rarr;
+                </a>
             </div>
 
             <div class="p-3">
