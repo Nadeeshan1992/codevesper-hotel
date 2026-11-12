@@ -85,15 +85,31 @@ if (!empty($orderIds)) {
                 <div class="card-header-clean bg-light d-flex justify-content-between align-items-center">
                     <div>
                         <span class="fw-bold text-dark fs-6"><?= htmlspecialchars($order['order_number']) ?></span>
-                        <div class="small text-muted"><?= date('h:i A', strtotime($order['created_at'])) ?> &bull; Waiter: <?= htmlspecialchars($order['waiter_name'] ?? 'Staff') ?></div>
+                        <div class="small text-muted">
+                            <?= date('h:i A', strtotime($order['created_at'])) ?> &bull; 
+                            <?php if (strpos($order['order_number'], 'QR-') === 0 || empty($order['waiter_name'])): ?>
+                                <span class="badge bg-info-subtle text-info border border-info"><i class="fa-solid fa-qrcode me-1"></i> Guest QR</span>
+                            <?php else: ?>
+                                Waiter: <?= htmlspecialchars($order['waiter_name']) ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
                     <span class="badge bg-<?= $badgeColor ?> text-dark px-2 py-1 small"><?= $badgeText ?></span>
                 </div>
 
                 <div class="p-3">
-                    <div class="mb-3 p-2 bg-light rounded-2 fw-bold text-dark small border">
-                        Destination: <?= $dest ?>
+                    <div class="mb-3 p-2 bg-light rounded-2 fw-bold text-dark small border d-flex justify-content-between align-items-center">
+                        <div>Destination: <?= $dest ?></div>
+                        <?php if (strpos($order['order_number'], 'QR-') === 0): ?>
+                            <span class="badge bg-primary"><i class="fa-solid fa-mobile-screen me-1"></i> QR Self-Order</span>
+                        <?php endif; ?>
                     </div>
+
+                    <?php if (!empty($order['notes'])): ?>
+                        <div class="p-2 bg-warning-subtle text-warning-emphasis border border-warning rounded-2 small mb-3" style="font-size: 0.75rem;">
+                            <i class="fa-solid fa-note-sticky me-1"></i> <?= htmlspecialchars($order['notes']) ?>
+                        </div>
+                    <?php endif; ?>
 
                     <div class="list-group list-group-flush mb-3">
                         <?php foreach ($orderItems as $item): ?>

@@ -299,7 +299,7 @@ CREATE TABLE `orders` (
   `table_id` int DEFAULT NULL,
   `room_id` int DEFAULT NULL,
   `guest_id` int DEFAULT NULL,
-  `waiter_id` int NOT NULL,
+  `waiter_id` int DEFAULT NULL,
   `status` enum('pending','in_kitchen','ready','served','billed','cancelled') COLLATE utf8mb4_unicode_ci DEFAULT 'pending',
   `subtotal` decimal(10,2) NOT NULL DEFAULT '0.00',
   `tax_amount` decimal(10,2) NOT NULL DEFAULT '0.00',

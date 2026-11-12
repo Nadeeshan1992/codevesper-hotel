@@ -26,14 +26,19 @@ $tables = $db->query("
 ")->fetchAll();
 ?>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
     <div>
         <h5 class="fw-bold mb-0"><i class="fa-solid fa-utensils text-success me-2"></i>Restaurant Dining Floor Plan</h5>
         <span class="text-muted small">Floor sections and live dining table states</span>
     </div>
-    <a href="pos.php" class="btn btn-primary btn-sm px-3 rounded-pill">
-        <i class="fa-solid fa-tablet-screen-button me-1"></i> Waiter Tablet POS
-    </a>
+    <div class="d-flex gap-2">
+        <a href="table-qrs.php" class="btn btn-outline-warning text-dark btn-sm px-3 rounded-pill fw-bold">
+            <i class="fa-solid fa-qrcode me-1 text-warning"></i> Print Table QR Stands
+        </a>
+        <a href="pos.php" class="btn btn-primary btn-sm px-3 rounded-pill">
+            <i class="fa-solid fa-tablet-screen-button me-1"></i> Waiter Tablet POS
+        </a>
+    </div>
 </div>
 
 <div class="row g-4">

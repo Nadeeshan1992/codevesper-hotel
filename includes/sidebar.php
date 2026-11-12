@@ -87,6 +87,11 @@ $dynamicRoomCount = (int)getDbConnection()->query("SELECT COUNT(*) FROM rooms")-
             <i class="fa-solid fa-utensils"></i>
             <span>Dining Tables</span>
         </a>
+        <a href="table-qrs.php" class="nav-item-link <?= ($currentPage == 'table-qrs.php') ? 'active' : '' ?>">
+            <i class="fa-solid fa-qrcode text-warning"></i>
+            <span class="fw-bold">Table QR Stands</span>
+            <span class="badge bg-warning-subtle text-warning border border-warning-subtle ms-auto" style="font-size: 0.65rem;">GUEST</span>
+        </a>
         <a href="restaurant-menu.php" class="nav-item-link <?= ($currentPage == 'restaurant-menu.php') ? 'active' : '' ?>">
             <i class="fa-solid fa-book-open"></i>
             <span>Food & Drink Menu</span>

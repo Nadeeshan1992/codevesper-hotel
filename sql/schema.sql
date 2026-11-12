@@ -343,7 +343,7 @@ CREATE TABLE `orders` (
     `table_id` INT NULL,
     `room_id` INT NULL,
     `guest_id` INT NULL,
-    `waiter_id` INT NOT NULL,
+    `waiter_id` INT NULL,
     `status` ENUM('pending', 'in_kitchen', 'ready', 'served', 'billed', 'cancelled') DEFAULT 'pending',
     `subtotal` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     `tax_amount` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
