@@ -60,7 +60,16 @@ $currentUser = currentUser();
                 </div>
             </div>
 
-            <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2 gap-md-3">
+                <!-- Live Business Date & Real-Time Clock -->
+                <div class="d-none d-lg-flex align-items-center gap-2 px-3 py-1 bg-white border rounded-pill shadow-sm" style="font-size: 0.82rem;">
+                    <span class="text-primary"><i class="fa-regular fa-calendar-days"></i></span>
+                    <span class="fw-semibold text-dark live-current-date"><?= date('D, M j, Y') ?></span>
+                    <span class="text-muted opacity-50">&bull;</span>
+                    <span class="text-warning"><i class="fa-regular fa-clock"></i></span>
+                    <span class="fw-bold font-monospace text-primary live-current-time"><?= date('h:i:s A') ?></span>
+                </div>
+
                 <!-- Quick POS Shortcut for Waiter/Staff -->
                 <a href="pos.php" class="btn btn-sm btn-outline-primary d-none d-md-inline-flex align-items-center gap-2 rounded-pill px-3">
                     <i class="fa-solid fa-tablet-screen-button text-primary"></i>
