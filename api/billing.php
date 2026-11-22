@@ -104,6 +104,16 @@ if ($action === 'settle_checkout') {
             $db->prepare("UPDATE reservations SET status = 'checked_out' WHERE id = ?")->execute([$checkin['res_id']]);
         }
 
+        // Free any dining tables associated with room orders
+        $tableStmt = $db->prepare("SELECT DISTINCT table_id FROM orders WHERE room_id = ? AND payment_status = 'billed_to_room' AND table_id IS NOT NULL");
+        $tableStmt->execute([$roomId]);
+        $tableIds = $tableStmt->fetchAll(PDO::FETCH_COLUMN);
+        foreach ($tableIds as $tId) {
+            if ($tId) {
+                $db->prepare("UPDATE dining_tables SET status = 'available' WHERE id = ?")->execute([$tId]);
+            }
+        }
+
         // Mark restaurant orders billed
         $db->prepare("UPDATE orders SET payment_status = 'paid', status = 'billed' WHERE room_id = ? AND payment_status = 'billed_to_room'")->execute([$roomId]);
 

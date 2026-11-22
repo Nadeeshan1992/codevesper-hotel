@@ -248,7 +248,21 @@ $availableCount = (int)$db->query("SELECT COUNT(*) FROM dining_tables WHERE stat
                         <a href="pos.php" class="btn btn-sm btn-outline-success flex-grow-1">
                             <i class="fa-solid fa-plus me-1"></i> New Order
                         </a>
+                    <?php elseif ($t['total_amount'] > 0): ?>
+                        <!-- Table has active bill: 1-Click Settle, Print Receipt & Auto-Free -->
+                        <button type="button" class="btn btn-sm btn-success flex-grow-1" onclick="settleTableBill(<?= $t['id'] ?>, '<?= htmlspecialchars(addslashes($t['table_number'])) ?>', '<?= formatMoney($t['total_amount']) ?>')">
+                            <i class="fa-solid fa-cash-register me-1"></i> Settle Bill
+                        </button>
+                        <form method="POST">
+                            <input type="hidden" name="update_table_status" value="1">
+                            <input type="hidden" name="table_id" value="<?= $t['id'] ?>">
+                            <input type="hidden" name="status" value="available">
+                            <button type="submit" class="btn btn-sm btn-outline-secondary" title="Force Free Table (Without Payment)">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </button>
+                        </form>
                     <?php else: ?>
+                        <!-- Occupied with 0 bill: Simple Free Table -->
                         <form method="POST" class="flex-grow-1">
                             <input type="hidden" name="update_table_status" value="1">
                             <input type="hidden" name="table_id" value="<?= $t['id'] ?>">
@@ -429,6 +443,78 @@ function confirmDeleteTable() {
         if (result.isConfirmed) {
             document.getElementById('deleteTableId').value = tableId;
             document.getElementById('deleteTableForm').submit();
+        }
+    });
+}
+
+function settleTableBill(tableId, tableNumber, totalFormatted) {
+    Swal.fire({
+        title: 'Settle ' + tableNumber + ' Bill',
+        html: `
+            <div class="mb-3 text-center">
+                <span class="text-muted small">Total Due to Settle:</span>
+                <h3 class="text-success fw-bold my-1">${totalFormatted}</h3>
+            </div>
+            <div class="text-start mb-2">
+                <label class="form-label small fw-bold text-muted mb-1">Select Payment Method:</label>
+                <select id="swalTablePayMethod" class="form-select form-select-sm">
+                    <option value="Cash">Cash</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Debit Card">Debit Card</option>
+                    <option value="UPI / QR">QR Payment</option>
+                </select>
+            </div>
+            <small class="text-muted d-block mt-2">
+                <i class="fa-solid fa-circle-check text-success me-1"></i>Table will automatically clear to <b>Available</b> upon payment.
+            </small>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#16a34a',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: '<i class="fa-solid fa-check me-1"></i> Settle & Clear Table',
+        cancelButtonText: 'Cancel',
+        preConfirm: () => {
+            const payMethod = document.getElementById('swalTablePayMethod').value;
+            return { payMethod: payMethod };
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const payMethod = result.value.payMethod;
+            const formData = new FormData();
+            formData.append('action', 'settle_table_bill');
+            formData.append('table_id', tableId);
+            formData.append('payment_method', payMethod);
+
+            fetch('api/orders.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(r => r.json())
+            .then(res => {
+                if (res.success) {
+                    Swal.fire({
+                        title: 'Table Cleared & Paid!',
+                        html: `<p>${res.message}</p>`,
+                        icon: 'success',
+                        showCancelButton: Boolean(res.latest_order_number),
+                        confirmButtonColor: '#2563eb',
+                        cancelButtonColor: '#64748b',
+                        confirmButtonText: '<i class="fa-solid fa-print me-1"></i> Print POS Receipt',
+                        cancelButtonText: 'Done'
+                    }).then((printRes) => {
+                        if (printRes.isConfirmed && res.latest_order_number) {
+                            window.open('print-invoice.php?order=' + encodeURIComponent(res.latest_order_number) + '&autoprint=1', '_blank', 'width=420,height=720');
+                        }
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire('Error', res.message, 'error');
+                }
+            })
+            .catch(err => {
+                Swal.fire('Request Failed', String(err), 'error');
+            });
         }
     });
 }

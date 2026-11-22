@@ -95,9 +95,10 @@ if ($action === 'create_order') {
             $itemStmt->execute([$orderId, $itemId, $qty, $price, $itemTotal, $instruction]);
         }
 
-        // If table occupied, update table status
+        // If table assigned: If paid immediately, table is available; otherwise occupied
         if ($tableId) {
-            $db->prepare("UPDATE dining_tables SET status = 'occupied' WHERE id = ?")->execute([$tableId]);
+            $tableStatus = ($paymentStatus === 'paid') ? 'available' : 'occupied';
+            $db->prepare("UPDATE dining_tables SET status = ? WHERE id = ?")->execute([$tableStatus, $tableId]);
         }
 
         // If direct payment recorded
@@ -159,6 +160,73 @@ if ($action === 'update_kot_status') {
 
         echo json_encode(['success' => true, 'message' => "Order updated to " . ucfirst($status)]);
     } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+    exit;
+}
+
+// 3. Settle Table Bill & Free Table Automatically
+if ($action === 'settle_table_bill') {
+    $tableId = (int)($_POST['table_id'] ?? 0);
+    $paymentMethod = sanitize($_POST['payment_method'] ?? 'Cash');
+    $notes = sanitize($_POST['notes'] ?? 'Settled table dining bill');
+
+    if ($tableId <= 0) {
+        echo json_encode(['success' => false, 'message' => 'Invalid table ID']);
+        exit;
+    }
+
+    try {
+        $db->beginTransaction();
+
+        $tableStmt = $db->prepare("SELECT * FROM dining_tables WHERE id = ?");
+        $tableStmt->execute([$tableId]);
+        $table = $tableStmt->fetch();
+        if (!$table) throw new Exception("Table not found");
+
+        // Fetch all active unpaid orders for this table
+        $ordersStmt = $db->prepare("
+            SELECT * FROM orders 
+            WHERE table_id = ? AND payment_status != 'paid' AND status != 'cancelled'
+        ");
+        $ordersStmt->execute([$tableId]);
+        $unpaidOrders = $ordersStmt->fetchAll();
+
+        $totalSettled = 0.00;
+        $latestOrderNumber = '';
+
+        foreach ($unpaidOrders as $ord) {
+            $ordTotal = (float)$ord['total_amount'];
+            $totalSettled += $ordTotal;
+            $latestOrderNumber = $ord['order_number'];
+
+            // 1. Record payment in payments ledger
+            $payStmt = $db->prepare("
+                INSERT INTO payments (order_id, amount, payment_method, notes, recorded_by, payment_date)
+                VALUES (?, ?, ?, ?, ?, NOW())
+            ");
+            $payStmt->execute([$ord['id'], $ordTotal, $paymentMethod, $notes, $_SESSION['user_id']]);
+
+            // 2. Mark order as paid and billed
+            $db->prepare("UPDATE orders SET payment_status = 'paid', status = 'billed' WHERE id = ?")->execute([$ord['id']]);
+        }
+
+        // 3. AUTOMATICALLY FREE THE TABLE
+        $db->prepare("UPDATE dining_tables SET status = 'available' WHERE id = ?")->execute([$tableId]);
+
+        logAudit('Restaurant', 'Table Bill Settled', "Table {$table['table_number']} settled for " . formatMoney($totalSettled) . " via {$paymentMethod}. Table automatically released to Available.");
+
+        $db->commit();
+
+        echo json_encode([
+            'success' => true,
+            'table_number' => $table['table_number'],
+            'total_settled' => $totalSettled,
+            'latest_order_number' => $latestOrderNumber,
+            'message' => "Table {$table['table_number']} successfully settled (" . formatMoney($totalSettled) . ") and released to Available!"
+        ]);
+    } catch (Exception $e) {
+        $db->rollBack();
         echo json_encode(['success' => false, 'message' => $e->getMessage()]);
     }
     exit;
