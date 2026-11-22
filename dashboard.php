@@ -105,8 +105,6 @@ $recentOrders = $db->query("
                         <h6 class="fw-bold mb-0">Quick Operations Hub</h6>
                         <span class="badge bg-light text-primary border d-inline-flex align-items-center gap-1 px-2 py-1" style="font-size: 0.75rem;">
                             <i class="fa-regular fa-calendar-days text-primary"></i> <span class="live-current-date"><?= date('D, M j, Y') ?></span>
-                            <span class="text-muted opacity-50">&bull;</span>
-                            <i class="fa-regular fa-clock text-warning"></i> <span class="fw-bold font-monospace text-primary live-current-time"><?= date('h:i:s A') ?></span>
                         </span>
                     </div>
                     <small class="text-muted">Direct shortcuts for standard daily operations</small>
