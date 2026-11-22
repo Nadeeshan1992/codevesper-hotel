@@ -635,10 +635,28 @@ function submitWalkinCheckin() {
 }
 
 function checkinReservation(reservationId, bookingRef, roomNumber) {
-    if (!confirm('Confirm check-in for ' + bookingRef + ' into ' + roomNumber + '?')) {
-        return;
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'Confirm Check-In',
+            html: `Issue key and process check-in for <strong class="text-primary font-monospace">${bookingRef}</strong> into <strong>${roomNumber}</strong>?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#2563eb',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: '<i class="fa-solid fa-door-open me-1"></i> Issue Key & Check-In',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                executeCheckin(reservationId);
+            }
+        });
+    } else {
+        if (!confirm('Confirm check-in for ' + bookingRef + ' into ' + roomNumber + '?')) return;
+        executeCheckin(reservationId);
     }
+}
 
+function executeCheckin(reservationId) {
     const formData = new FormData();
     formData.append('action', 'checkin_reservation');
     formData.append('reservation_id', reservationId);
@@ -650,21 +668,67 @@ function checkinReservation(reservationId, bookingRef, roomNumber) {
     .then(r => r.json())
     .then(res => {
         if (res.success) {
-            alert(res.message);
-            location.reload();
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'Checked In!',
+                    text: res.message,
+                    icon: 'success',
+                    timer: 1800,
+                    showConfirmButton: false
+                }).then(() => location.reload());
+            } else {
+                alert(res.message);
+                location.reload();
+            }
         } else {
-            alert('Error: ' + res.message);
+            if (typeof Swal !== 'undefined') {
+                Swal.fire('Error', res.message, 'error');
+            } else {
+                alert('Error: ' + res.message);
+            }
         }
     })
     .catch(err => {
-        alert('Request failed: ' + err);
+        if (typeof Swal !== 'undefined') {
+            Swal.fire('Request Failed', String(err), 'error');
+        } else {
+            alert('Request failed: ' + err);
+        }
     });
 }
 
 function cancelReservation(reservationId, bookingRef, guestName, roomNumber) {
-    const reason = prompt('Are you sure you want to cancel booking ' + bookingRef + ' for ' + guestName + ' (' + roomNumber + ')?\n\nPlease enter cancellation reason (optional):', 'Guest requested cancellation');
-    if (reason === null) return; // user cancelled prompt
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            title: 'Cancel Reservation?',
+            html: `<p class="mb-2">Are you sure you want to cancel booking <strong class="text-primary font-monospace">${bookingRef}</strong> for <strong>${guestName}</strong> (<strong>${roomNumber}</strong>)?</p><small class="text-muted d-block mb-2">The room will be released back to <b>Vacant</b> immediately.</small>`,
+            icon: 'warning',
+            input: 'text',
+            inputValue: 'Guest requested cancellation',
+            inputPlaceholder: 'Enter cancellation reason (optional)...',
+            inputAttributes: {
+                class: 'form-control form-control-sm'
+            },
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: '<i class="fa-solid fa-ban me-1"></i> Yes, Cancel Booking',
+            cancelButtonText: 'Keep Booking',
+            focusCancel: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const reason = result.value || 'Guest requested cancellation';
+                executeReservationCancel(reservationId, reason);
+            }
+        });
+    } else {
+        const reason = prompt('Are you sure you want to cancel booking ' + bookingRef + ' for ' + guestName + ' (' + roomNumber + ')?\n\nPlease enter cancellation reason (optional):', 'Guest requested cancellation');
+        if (reason === null) return;
+        executeReservationCancel(reservationId, reason);
+    }
+}
 
+function executeReservationCancel(reservationId, reason) {
     const formData = new FormData();
     formData.append('action', 'cancel_reservation');
     formData.append('reservation_id', reservationId);
@@ -677,14 +741,32 @@ function cancelReservation(reservationId, bookingRef, guestName, roomNumber) {
     .then(r => r.json())
     .then(res => {
         if (res.success) {
-            alert(res.message);
-            location.reload();
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: 'Cancelled!',
+                    text: res.message,
+                    icon: 'success',
+                    timer: 1800,
+                    showConfirmButton: false
+                }).then(() => location.reload());
+            } else {
+                alert(res.message);
+                location.reload();
+            }
         } else {
-            alert('Error: ' + res.message);
+            if (typeof Swal !== 'undefined') {
+                Swal.fire('Error', res.message, 'error');
+            } else {
+                alert('Error: ' + res.message);
+            }
         }
     })
     .catch(err => {
-        alert('Request failed: ' + err);
+        if (typeof Swal !== 'undefined') {
+            Swal.fire('Request Failed', String(err), 'error');
+        } else {
+            alert('Request failed: ' + err);
+        }
     });
 }
 </script>
