@@ -153,6 +153,59 @@ if ($action === 'checkin_reservation') {
     exit;
 }
 
+// 2c. Cancel Confirmed Advance Reservation & Release Room
+if ($action === 'cancel_reservation') {
+    $resId = (int)($_POST['reservation_id'] ?? 0);
+    $reason = sanitize($_POST['reason'] ?? 'Guest Request / Cancelled');
+    if ($resId <= 0) {
+        echo json_encode(['success' => false, 'message' => 'Invalid reservation ID']);
+        exit;
+    }
+
+    try {
+        $db->beginTransaction();
+
+        $resStmt = $db->prepare("SELECT * FROM reservations WHERE id = ?");
+        $resStmt->execute([$resId]);
+        $res = $resStmt->fetch();
+
+        if (!$res) throw new Exception("Reservation not found");
+        if ($res['status'] !== 'confirmed') {
+            throw new Exception("Only confirmed reservations can be cancelled (Current status: {$res['status']})");
+        }
+
+        $roomId = (int)$res['room_id'];
+
+        // 1. Mark reservation as cancelled
+        $db->prepare("UPDATE reservations SET status = 'cancelled' WHERE id = ?")->execute([$resId]);
+
+        // 2. Release room back to 'vacant' if currently 'reserved' and no other active/upcoming confirmed reservation
+        $checkActive = $db->prepare("
+            SELECT COUNT(*) FROM reservations 
+            WHERE room_id = ? AND status = 'confirmed' AND check_out_date >= CURDATE()
+        ");
+        $checkActive->execute([$roomId]);
+        $hasOther = (int)$checkActive->fetchColumn();
+
+        if ($hasOther === 0) {
+            $db->prepare("UPDATE rooms SET status = 'vacant' WHERE id = ? AND status = 'reserved'")->execute([$roomId]);
+        }
+
+        // 3. Security Audit Log
+        logAudit('Reservations', 'Booking Cancelled', "Reservation {$res['booking_ref']} cancelled. Reason: {$reason}. Room #{$roomId} released.");
+
+        $db->commit();
+        echo json_encode([
+            'success' => true,
+            'message' => "Reservation {$res['booking_ref']} has been successfully cancelled and the room is released!"
+        ]);
+    } catch (Exception $e) {
+        $db->rollBack();
+        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    }
+    exit;
+}
+
 // 3. Add New Room Dynamically (Support Any Number of Rooms)
 if ($action === 'create_room') {
     $roomNumber = sanitize($_POST['room_number'] ?? '');

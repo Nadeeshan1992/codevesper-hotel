@@ -446,9 +446,14 @@ $recentOrders = $db->query("
                                                     <div class="text-muted" style="font-size: 0.7rem;">of <?= formatMoney($res['total_room_cost']) ?></div>
                                                 </td>
                                                 <td class="text-end">
-                                                    <button type="button" class="btn btn-sm btn-primary px-3 py-1 rounded-pill" onclick="checkinReservation(<?= $res['id'] ?>, '<?= htmlspecialchars(addslashes($res['booking_ref'])) ?>', '<?= htmlspecialchars(addslashes($res['room_number'])) ?>')">
-                                                        <i class="fa-solid fa-door-open me-1"></i> Check-In Guest
-                                                    </button>
+                                                    <div class="d-flex justify-content-end gap-1 flex-wrap">
+                                                        <button type="button" class="btn btn-sm btn-primary px-3 py-1 rounded-pill" onclick="checkinReservation(<?= $res['id'] ?>, '<?= htmlspecialchars(addslashes($res['booking_ref'])) ?>', '<?= htmlspecialchars(addslashes($res['room_number'])) ?>')">
+                                                            <i class="fa-solid fa-door-open me-1"></i> Check-In
+                                                        </button>
+                                                        <button type="button" class="btn btn-sm btn-outline-danger px-2 py-1 rounded-pill" title="Cancel Booking" onclick="cancelReservation(<?= $res['id'] ?>, '<?= htmlspecialchars(addslashes($res['booking_ref'])) ?>', '<?= htmlspecialchars(addslashes($res['guest_name'])) ?>', '<?= htmlspecialchars(addslashes($res['room_number'])) ?>')">
+                                                            <i class="fa-solid fa-ban me-1"></i> Cancel
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -637,6 +642,33 @@ function checkinReservation(reservationId, bookingRef, roomNumber) {
     const formData = new FormData();
     formData.append('action', 'checkin_reservation');
     formData.append('reservation_id', reservationId);
+
+    fetch('api/rooms.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res.success) {
+            alert(res.message);
+            location.reload();
+        } else {
+            alert('Error: ' + res.message);
+        }
+    })
+    .catch(err => {
+        alert('Request failed: ' + err);
+    });
+}
+
+function cancelReservation(reservationId, bookingRef, guestName, roomNumber) {
+    const reason = prompt('Are you sure you want to cancel booking ' + bookingRef + ' for ' + guestName + ' (' + roomNumber + ')?\n\nPlease enter cancellation reason (optional):', 'Guest requested cancellation');
+    if (reason === null) return; // user cancelled prompt
+
+    const formData = new FormData();
+    formData.append('action', 'cancel_reservation');
+    formData.append('reservation_id', reservationId);
+    formData.append('reason', reason);
 
     fetch('api/rooms.php', {
         method: 'POST',

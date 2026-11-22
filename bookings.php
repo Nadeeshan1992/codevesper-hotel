@@ -156,9 +156,14 @@ $prefillOutDate = date('Y-m-d', strtotime($prefillDate . ' +2 days'));
                         </td>
                         <td class="text-end">
                             <?php if ($res['status'] === 'confirmed'): ?>
-                                <a href="rooms.php" class="btn btn-sm btn-outline-success py-1 px-2" title="Check-In Guest">
-                                    <i class="fa-solid fa-key"></i> Check-In
-                                </a>
+                                <div class="d-flex justify-content-end gap-1">
+                                    <a href="rooms.php" class="btn btn-sm btn-outline-success py-1 px-2" title="Check-In Guest">
+                                        <i class="fa-solid fa-key"></i> Check-In
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger py-1 px-2" title="Cancel Booking" onclick="cancelReservation(<?= $res['id'] ?>, '<?= htmlspecialchars(addslashes($res['booking_ref'])) ?>', '<?= htmlspecialchars(addslashes($res['guest_name'])) ?>', '<?= htmlspecialchars(addslashes($res['room_number'])) ?>')">
+                                        <i class="fa-solid fa-ban"></i> Cancel
+                                    </button>
+                                </div>
                             <?php elseif ($res['status'] === 'checked_in'): ?>
                                 <a href="billing.php?room_id=<?= $res['room_id'] ?>" class="btn btn-sm btn-outline-primary py-1 px-2" title="View Folio">
                                     <i class="fa-solid fa-receipt"></i> Folio
@@ -240,13 +245,40 @@ $prefillOutDate = date('Y-m-d', strtotime($prefillDate . ' +2 days'));
     </div>
 </div>
 
-<?php if ($prefillRoomId > 0): ?>
 <script>
+<?php if ($prefillRoomId > 0): ?>
 document.addEventListener('DOMContentLoaded', function() {
     var modal = new bootstrap.Modal(document.getElementById('newBookingModal'));
     modal.show();
 });
-</script>
 <?php endif; ?>
+
+function cancelReservation(resId, bookingRef, guestName, roomNumber) {
+    const reason = prompt('Are you sure you want to cancel booking ' + bookingRef + ' for ' + guestName + ' (' + roomNumber + ')?\n\nPlease enter cancellation reason (optional):', 'Guest requested cancellation');
+    if (reason === null) return; // user cancelled prompt
+
+    const formData = new FormData();
+    formData.append('action', 'cancel_reservation');
+    formData.append('reservation_id', resId);
+    formData.append('reason', reason);
+
+    fetch('api/rooms.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res.success) {
+            alert(res.message);
+            location.reload();
+        } else {
+            alert('Error: ' + res.message);
+        }
+    })
+    .catch(err => {
+        alert('Request failed: ' + err);
+    });
+}
+</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
