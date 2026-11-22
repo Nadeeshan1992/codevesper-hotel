@@ -25,20 +25,42 @@ $dirtyRooms = $roomCounts['dirty'] ?? 0;
 $maintenanceRooms = $roomCounts['maintenance'] ?? 0;
 $occupancyRate = ($totalRooms > 0) ? round(($occupiedRooms / $totalRooms) * 100, 1) : 0;
 
-// 2. Today's Revenue (Rooms + Restaurant)
-$todayRestaurantRevenue = $db->query("
-    SELECT COALESCE(SUM(total_amount), 0) 
-    FROM orders 
+// 2. Today's Revenue (Consolidated Rooms + Restaurant Dining)
+// Invoiced Room Revenue today (Room charges + tax from settled folios)
+$todayInvoicedRoom = (float)$db->query("
+    SELECT COALESCE(SUM(room_charges + tax_amount), 0) 
+    FROM invoices 
     WHERE DATE(created_at) = CURDATE() AND payment_status != 'cancelled'
 ")->fetchColumn();
 
-$todayRoomRevenue = $db->query("
+// Active Check-in deposits collected today (In-house guests who have not checked out yet)
+$todayActiveDeposits = (float)$db->query("
     SELECT COALESCE(SUM(deposit_paid), 0) 
     FROM check_ins 
-    WHERE DATE(check_in_time) = CURDATE()
+    WHERE DATE(check_in_time) = CURDATE() AND status = 'active'
 ")->fetchColumn();
 
-$totalTodayRevenue = (float)$todayRestaurantRevenue + (float)$todayRoomRevenue;
+$todayRoomRevenue = $todayInvoicedRoom + $todayActiveDeposits;
+
+// Invoiced Restaurant charges today (In-room dining collected at checkout)
+$todayInvoicedDining = (float)$db->query("
+    SELECT COALESCE(SUM(restaurant_charges), 0) 
+    FROM invoices 
+    WHERE DATE(created_at) = CURDATE() AND payment_status != 'cancelled'
+")->fetchColumn();
+
+// Direct dining sales paid today (Table POS / walk-in dine-in not charged to room)
+$todayDirectDining = (float)$db->query("
+    SELECT COALESCE(SUM(total_amount), 0) 
+    FROM orders 
+    WHERE DATE(created_at) = CURDATE() 
+      AND payment_status IN ('paid', 'billed') 
+      AND room_id IS NULL
+")->fetchColumn();
+
+$todayRestaurantRevenue = $todayInvoicedDining + $todayDirectDining;
+
+$totalTodayRevenue = (float)$todayRoomRevenue + (float)$todayRestaurantRevenue;
 
 // 3. Active Tables & Pending KOTs
 $activeOrdersCount = $db->query("

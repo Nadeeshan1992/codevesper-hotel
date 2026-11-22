@@ -13,18 +13,27 @@ $db = getDbConnection();
 $startDate = $_GET['start_date'] ?? date('Y-m-01');
 $endDate = $_GET['end_date'] ?? date('Y-m-d');
 
-// Revenue stats
-$totalInvoiced = $db->query("
-    SELECT COALESCE(SUM(total_amount), 0) FROM invoices
-")->fetchColumn();
+// Revenue stats filtered by date range
+$stmtInv = $db->prepare("
+    SELECT COALESCE(SUM(total_amount), 0) FROM invoices 
+    WHERE DATE(created_at) BETWEEN ? AND ? AND payment_status != 'cancelled'
+");
+$stmtInv->execute([$startDate, $endDate]);
+$totalInvoiced = $stmtInv->fetchColumn();
 
-$totalRestaurantSales = $db->query("
-    SELECT COALESCE(SUM(total_amount), 0) FROM orders WHERE payment_status != 'cancelled'
-")->fetchColumn();
+$stmtRest = $db->prepare("
+    SELECT COALESCE(SUM(total_amount), 0) FROM orders 
+    WHERE DATE(created_at) BETWEEN ? AND ? AND payment_status != 'cancelled'
+");
+$stmtRest->execute([$startDate, $endDate]);
+$totalRestaurantSales = $stmtRest->fetchColumn();
 
-$totalPaidDeposits = $db->query("
-    SELECT COALESCE(SUM(deposit_paid), 0) FROM check_ins
-")->fetchColumn();
+$stmtDep = $db->prepare("
+    SELECT COALESCE(SUM(deposit_paid), 0) FROM check_ins 
+    WHERE DATE(check_in_time) BETWEEN ? AND ?
+");
+$stmtDep->execute([$startDate, $endDate]);
+$totalPaidDeposits = $stmtDep->fetchColumn();
 
 // Fetch Audit Logs
 $auditLogs = $db->query("
