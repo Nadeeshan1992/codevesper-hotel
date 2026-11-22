@@ -49,25 +49,28 @@ $auditLogs = $db->query("
 <!-- Date Range Picker & Print -->
 <div class="card-custom p-3 mb-4 bg-white d-flex flex-wrap justify-content-between align-items-center gap-3">
     <form method="GET" class="d-flex flex-wrap align-items-center gap-2">
-        <span class="small fw-bold text-muted">Reporting Period:</span>
+        <span class="small fw-bold text-muted"><i class="fa-regular fa-calendar-days me-1 text-primary"></i>Period:</span>
         <input type="date" name="start_date" class="form-control form-control-sm" value="<?= htmlspecialchars($startDate) ?>">
         <span class="text-muted">to</span>
         <input type="date" name="end_date" class="form-control form-control-sm" value="<?= htmlspecialchars($endDate) ?>">
-        <button type="submit" class="btn btn-primary btn-sm px-3">Filter</button>
+        <button type="submit" class="btn btn-primary btn-sm px-3"><i class="fa-solid fa-filter me-1"></i>Filter</button>
+        <a href="reports.php?start_date=<?= date('Y-m-d') ?>&end_date=<?= date('Y-m-d') ?>" class="btn btn-outline-secondary btn-sm">Today</a>
+        <a href="reports.php?start_date=<?= date('Y-m-01') ?>&end_date=<?= date('Y-m-d') ?>" class="btn btn-outline-secondary btn-sm">This Month</a>
     </form>
-    <button class="btn btn-outline-secondary btn-sm" onclick="window.print()">
+    <button class="btn btn-outline-primary btn-sm rounded-pill px-3" onclick="window.print()">
         <i class="fa-solid fa-print me-1"></i> Print Executive Report
     </button>
 </div>
 
-<!-- Revenue Summary Cards -->
-<div class="row g-4 mb-4">
+<!-- Revenue Summary Cards (Aligned & Uniform Luxury Layout) -->
+<div class="row g-3 g-xl-4 mb-4">
+    <!-- 1. Total Invoiced Revenue -->
     <div class="col-12 col-sm-6 col-lg-3">
-        <div class="stat-card">
-            <div>
-                <div class="stat-label">Total Invoiced (Rooms & F&B)</div>
-                <div class="stat-number text-success"><?= formatMoney($totalInvoiced) ?></div>
-                <div class="small text-muted">Master folios settled</div>
+        <div class="stat-card stat-success h-100">
+            <div class="stat-content d-flex flex-column justify-content-between h-100">
+                <div class="stat-label text-truncate" title="Total Invoiced Revenue (Rooms & F&B)">Total Invoiced Revenue</div>
+                <div class="stat-number text-success my-1"><?= formatMoney($totalInvoiced) ?></div>
+                <div class="stat-subtext">Master folios settled</div>
             </div>
             <div class="stat-icon bg-success bg-opacity-10 text-success">
                 <i class="fa-solid fa-file-invoice-dollar"></i>
@@ -75,12 +78,13 @@ $auditLogs = $db->query("
         </div>
     </div>
 
+    <!-- 2. Restaurant Gross Sales -->
     <div class="col-12 col-sm-6 col-lg-3">
-        <div class="stat-card">
-            <div>
-                <div class="stat-label">Restaurant Gross Sales</div>
-                <div class="stat-number text-primary"><?= formatMoney($totalRestaurantSales) ?></div>
-                <div class="small text-muted">Dine-in & Room orders</div>
+        <div class="stat-card stat-primary h-100">
+            <div class="stat-content d-flex flex-column justify-content-between h-100">
+                <div class="stat-label text-truncate" title="Restaurant Gross Sales">Restaurant Sales</div>
+                <div class="stat-number text-primary my-1"><?= formatMoney($totalRestaurantSales) ?></div>
+                <div class="stat-subtext">Dine-in & Room orders</div>
             </div>
             <div class="stat-icon bg-primary bg-opacity-10 text-primary">
                 <i class="fa-solid fa-utensils"></i>
@@ -88,12 +92,13 @@ $auditLogs = $db->query("
         </div>
     </div>
 
+    <!-- 3. Advance Deposits Collected -->
     <div class="col-12 col-sm-6 col-lg-3">
-        <div class="stat-card">
-            <div>
-                <div class="stat-label">Advance Deposits Collected</div>
-                <div class="stat-number text-warning"><?= formatMoney($totalPaidDeposits) ?></div>
-                <div class="small text-muted">Reservation guarantees</div>
+        <div class="stat-card stat-warning h-100">
+            <div class="stat-content d-flex flex-column justify-content-between h-100">
+                <div class="stat-label text-truncate" title="Advance Deposits Collected">Advance Deposits</div>
+                <div class="stat-number text-warning my-1"><?= formatMoney($totalPaidDeposits) ?></div>
+                <div class="stat-subtext">Reservation guarantees</div>
             </div>
             <div class="stat-icon bg-warning bg-opacity-10 text-warning">
                 <i class="fa-solid fa-hand-holding-dollar"></i>
@@ -101,13 +106,14 @@ $auditLogs = $db->query("
         </div>
     </div>
 
+    <!-- 4. Total Room Inventory -->
     <?php $totalReportRooms = (int)$db->query("SELECT COUNT(*) FROM rooms")->fetchColumn(); ?>
     <div class="col-12 col-sm-6 col-lg-3">
-        <div class="stat-card">
-            <div>
-                <div class="stat-label">Total Room Inventory</div>
-                <div class="stat-number text-dark"><?= $totalReportRooms ?> Keys</div>
-                <div class="small text-muted">Scalable property keys</div>
+        <div class="stat-card border-start border-4 border-dark h-100">
+            <div class="stat-content d-flex flex-column justify-content-between h-100">
+                <div class="stat-label text-truncate" title="Total Property Room Keys">Total Room Keys</div>
+                <div class="stat-number text-dark my-1"><?= $totalReportRooms ?> Keys</div>
+                <div class="stat-subtext">Scalable property keys</div>
             </div>
             <div class="stat-icon bg-dark bg-opacity-10 text-dark">
                 <i class="fa-solid fa-key"></i>
