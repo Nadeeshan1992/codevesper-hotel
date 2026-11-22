@@ -127,6 +127,8 @@ $prefillOutDate = date('Y-m-d', strtotime($prefillDate . ' +2 days'));
                         if ($res['status'] === 'checked_in') $badge = 'danger';
                         elseif ($res['status'] === 'checked_out') $badge = 'secondary';
                         elseif ($res['status'] === 'confirmed') $badge = 'primary';
+                        elseif ($res['status'] === 'no_show') $badge = 'dark';
+                        elseif ($res['status'] === 'cancelled') $badge = 'danger';
                     ?>
                     <tr>
                         <td>

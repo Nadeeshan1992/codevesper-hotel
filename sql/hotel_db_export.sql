@@ -415,7 +415,7 @@ CREATE TABLE `reservations` (
   `children` int DEFAULT '0',
   `total_room_cost` decimal(10,2) NOT NULL,
   `advance_deposit` decimal(10,2) DEFAULT '0.00',
-  `status` enum('confirmed','checked_in','checked_out','cancelled') COLLATE utf8mb4_unicode_ci DEFAULT 'confirmed',
+  `status` enum('confirmed','checked_in','checked_out','cancelled','no_show') COLLATE utf8mb4_unicode_ci DEFAULT 'confirmed',
   `created_by` int DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) /*T![clustered_index] CLUSTERED */,

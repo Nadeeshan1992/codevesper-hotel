@@ -69,14 +69,14 @@ $vacantRoomsList = $db->query("
     ORDER BY r.floor ASC, r.room_number ASC
 ")->fetchAll();
 
-// 6. Confirmed Advance Bookings & Upcoming Arrivals
+// 6. Confirmed Advance Bookings & Upcoming Arrivals (Today & Future Stays)
 $reservedArrivalsList = $db->query("
     SELECT res.*, r.room_number, r.floor, rt.name as type_name, g.full_name as guest_name, g.phone as guest_phone, g.email as guest_email
     FROM reservations res
     JOIN rooms r ON res.room_id = r.id
     JOIN room_types rt ON r.room_type_id = rt.id
     JOIN guests g ON res.guest_id = g.id
-    WHERE res.status = 'confirmed'
+    WHERE res.status = 'confirmed' AND res.check_out_date >= CURDATE()
     ORDER BY res.check_in_date ASC, res.id ASC
 ")->fetchAll();
 
@@ -396,7 +396,22 @@ $recentOrders = $db->query("
                                                     <div class="text-muted" style="font-size: 0.72rem;"><?= htmlspecialchars($res['type_name']) ?></div>
                                                 </td>
                                                 <td>
-                                                    <div class="small fw-semibold text-dark"><?= formatDate($res['check_in_date']) ?></div>
+                                                    <?php
+                                                    $today = date('Y-m-d');
+                                                    $diffDays = (int)floor((strtotime($res['check_in_date']) - strtotime($today)) / 86400);
+                                                    if ($diffDays === 0) {
+                                                        $timeBadge = '<span class="badge bg-primary ms-1"><i class="fa-solid fa-bell me-1"></i>Today</span>';
+                                                    } elseif ($diffDays === 1) {
+                                                        $timeBadge = '<span class="badge bg-info-subtle text-info border border-info ms-1">Tomorrow</span>';
+                                                    } elseif ($diffDays > 1) {
+                                                        $timeBadge = '<span class="badge bg-light text-dark border ms-1">In ' . $diffDays . ' days</span>';
+                                                    } else {
+                                                        $timeBadge = '<span class="badge bg-danger ms-1">Overdue</span>';
+                                                    }
+                                                    ?>
+                                                    <div class="small fw-semibold text-dark d-flex align-items-center flex-wrap gap-1">
+                                                        <?= formatDate($res['check_in_date']) ?> <?= $timeBadge ?>
+                                                    </div>
                                                     <small class="text-muted">Out: <?= formatDate($res['check_out_date']) ?></small>
                                                 </td>
                                                 <td>

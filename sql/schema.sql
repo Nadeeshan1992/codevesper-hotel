@@ -226,7 +226,7 @@ CREATE TABLE `reservations` (
     `children` INT DEFAULT 0,
     `total_room_cost` DECIMAL(10,2) NOT NULL,
     `advance_deposit` DECIMAL(10,2) DEFAULT 0.00,
-    `status` ENUM('confirmed', 'checked_in', 'checked_out', 'cancelled') DEFAULT 'confirmed',
+    `status` ENUM('confirmed', 'checked_in', 'checked_out', 'cancelled', 'no_show') DEFAULT 'confirmed',
     `created_by` INT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`guest_id`) REFERENCES `guests`(`id`),
